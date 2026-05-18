@@ -2,7 +2,9 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none';">
+
     <title>Julian's Market Dashboard</title>
     <style>
         :root {
@@ -28,7 +30,48 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
-        .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+        .container { 
+            max-width: 480px; 
+            margin: 0 auto; 
+            padding: clamp(12px, 3vw, 20px); 
+        }
+        
+        /* Responsive font sizes */
+        @media (max-width: 360px) {
+            html { font-size: 14px; }
+        }
+        @media (min-width: 361px) and (max-width: 430px) {
+            html { font-size: 15px; }
+        }
+        @media (min-width: 431px) {
+            html { font-size: 16px; }
+        }
+        
+        /* Tablet and desktop */
+        @media (min-width: 768px) {
+            .container { 
+                max-width: 640px; 
+                padding: 24px;
+            }
+            .nav-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+            .nav-card {
+                padding: 20px 12px;
+            }
+            .link-list {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                background: transparent;
+            }
+            .link-item {
+                background: var(--card);
+                border-radius: 16px;
+                border-bottom: none;
+            }
+        }
         header {
             text-align: center;
             padding: 24px 0 16px;
