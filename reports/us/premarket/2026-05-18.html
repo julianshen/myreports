@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>美股盤前 - 2026-05-18</title>
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --card: #141b2d;
+            --card-hover: #1e2740;
+            --text: #e2e8f0;
+            --text-secondary: #8892a0;
+            --accent: #60a5fa;
+            --accent2: #a78bfa;
+            --up: #4ade80;
+            --down: #f87171;
+            --warning: #fbbf24;
+            --danger: #ef4444;
+            --border: #1e293b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 90px; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--accent); text-decoration: none; font-size: 0.9rem;
+            margin-bottom: 12px; padding: 8px 0;
+        }
+        header { padding: 8px 0 16px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+        header h1 { font-size: 1.4rem; font-weight: 700; }
+        header .meta { color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px; }
+        .market-badge {
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            background: rgba(96,165,250,0.15); color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .section {
+            background: var(--card); border-radius: 16px; padding: 16px;
+            margin-bottom: 12px; border: 1px solid var(--border);
+        }
+        .section-title {
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--accent); margin-bottom: 12px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .futures-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .future-card {
+            background: var(--bg); border-radius: 12px; padding: 12px; text-align: center;
+            border: 1px solid var(--border);
+        }
+        .future-card .name { font-size: 0.75rem; color: var(--text-secondary); }
+        .future-card .price { font-size: 1.1rem; font-weight: 700; margin: 4px 0; }
+        .future-card .change { font-size: 0.8rem; font-weight: 600; }
+        .up { color: var(--up); }
+        .down { color: var(--down); }
+        .badge {
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+        }
+        .badge-green { background: rgba(74,222,128,0.15); color: var(--up); }
+        .badge-red { background: rgba(248,113,113,0.15); color: var(--down); }
+        .badge-yellow { background: rgba(251,191,36,0.15); color: var(--warning); }
+        .badge-blue { background: rgba(96,165,250,0.15); color: var(--accent); }
+
+        /* Stock Card - Rich */
+        .stock-card {
+            background: var(--bg); border-radius: 14px; padding: 16px;
+            margin-bottom: 12px; border: 1px solid var(--border);
+        }
+        .stock-card:last-child { margin-bottom: 0; }
+        .stock-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .stock-left { flex: 1; }
+        .stock-symbol { font-weight: 700; font-size: 1.15rem; color: var(--text); }
+        .stock-name { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+        .stock-right { text-align: right; }
+        .stock-price { font-weight: 700; font-size: 1.25rem; }
+        .stock-change { font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
+        .stock-position { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
+
+        .stock-metrics {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px; margin-top: 12px; padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        .metric {
+            text-align: center; padding: 8px 4px;
+            background: rgba(30,41,59,0.5); border-radius: 8px;
+        }
+        .metric-label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; }
+        .metric-value { font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
+        .metric-sub { font-size: 0.65rem; color: var(--text-secondary); margin-top: 2px; }
+
+        .stock-levels {
+            display: flex; justify-content: space-between; gap: 8px;
+            margin-top: 10px;
+        }
+        .level-box {
+            flex: 1; text-align: center; padding: 8px;
+            background: rgba(30,41,59,0.5); border-radius: 8px;
+        }
+        .level-label { font-size: 0.65rem; color: var(--text-secondary); }
+        .level-value { font-size: 0.8rem; font-weight: 600; }
+
+        .stock-signals { margin-top: 10px; }
+        .signal-tag {
+            display: inline-block; padding: 3px 8px; border-radius: 6px;
+            font-size: 0.7rem; font-weight: 600; margin-right: 6px; margin-bottom: 4px;
+        }
+        .signal-oversold { background: rgba(74,222,128,0.15); color: var(--up); }
+        .signal-overbought { background: rgba(248,113,113,0.15); color: var(--down); }
+        .signal-neutral { background: rgba(251,191,36,0.15); color: var(--warning); }
+        .signal-value { background: rgba(96,165,250,0.15); color: var(--accent); }
+
+        .alert-box {
+            background: rgba(239,68,68,0.08); border-left: 3px solid var(--danger);
+            padding: 12px; border-radius: 0 12px 12px 0; margin-top: 12px;
+        }
+        .alert-box .alert-title { color: var(--danger); font-weight: 700; font-size: 0.85rem; }
+        .alert-box .alert-text { color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px; }
+
+        .news-item {
+            padding: 12px 0; border-bottom: 1px solid var(--border);
+        }
+        .news-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .news-item .news-title { font-size: 0.85rem; line-height: 1.5; }
+        .news-item .news-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
+        .news-link {
+            display: inline-block; margin-top: 6px; padding: 4px 10px;
+            background: rgba(96,165,250,0.12); color: var(--accent);
+            text-decoration: none; border-radius: 6px; font-size: 0.75rem;
+        }
+
+        .summary-article { font-size: 0.9rem; line-height: 1.8; color: var(--text-secondary); }
+        .summary-article h3 { color: var(--accent); font-size: 0.95rem; margin: 12px 0 6px; }
+        .summary-article p { margin-bottom: 8px; }
+
+        .strategy-list { list-style: none; }
+        .strategy-list li {
+            padding: 8px 0; padding-left: 24px; position: relative;
+            font-size: 0.9rem; color: var(--text-secondary);
+        }
+        .strategy-list li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--card); border-top: 1px solid var(--border);
+            display: flex; justify-content: space-around; padding: 10px 0;
+            max-width: 480px; margin: 0 auto;
+            z-index: 100;
+        }
+        .bottom-nav a {
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 0.7rem; text-align: center; padding: 4px 8px;
+        }
+        .bottom-nav a.active { color: var(--accent); }
+        .bottom-nav .nav-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
+        footer { text-align: center; padding: 24px 16px; color: var(--text-secondary); font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="back-btn">← 返回儀表板</a>
+        <div class="market-badge">🇺🇸 US Market</div>
+        <header>
+            <h1>🌅 美股盤前分析</h1>
+            <div class="meta">2026-05-18 · 美東時間 8:30 生成</div>
+        </header>
+
+        <!-- 指數期貨 -->
+        <div class="section">
+            <div class="section-title">📊 指數期貨</div>
+            <div class="futures-grid">
+                <div class="future-card">
+                    <div class="name">S&P 500</div>
+                    <div class="price">0.00</div>
+                    <div class="change up">+0.00%</div>
+                </div>
+                <div class="future-card">
+                    <div class="name">NASDAQ</div>
+                    <div class="price">0.00</div>
+                    <div class="change up">+0.00%</div>
+                </div>
+                <div class="future-card">
+                    <div class="name">Dow</div>
+                    <div class="price">0.00</div>
+                    <div class="change up">+0.00%</div>
+                </div>
+                <div class="future-card">
+                    <div class="name">VIX</div>
+                    <div class="price">18.43</div>
+                    <div class="change up">+6.78%</div>
+                </div>
+            </div>
+            <div style="margin-top:12px;text-align:center;">
+                <span class="badge badge-yellow">中性</span>
+            </div>
+        </div>
+
+        <!-- 投資組合 -->
+        <div class="section">
+            <div class="section-title">💼 投資組合</div>
+            
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left">
+                    <div class="stock-symbol">AAOX</div>
+                    <div class="stock-name"></div>
+                </div>
+                <div class="stock-right">
+                    <div class="stock-price up">$68.00</div>
+                    <div class="stock-change up">+158.26%</div>
+                    
+                </div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric">
+                    <div class="metric-label">RSI</div>
+                    <div class="metric-value">57.3</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">52週區間</div>
+                    <div class="metric-value">60%</div>
+                    <div class="metric-sub">$15.45 - $103.00</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">均線</div>
+                    <div class="metric-value">多頭</div>
+                </div>
+            </div>
+            <div class="stock-levels">
+                <div class="level-box">
+                    <div class="level-label">支撐</div>
+                    <div class="level-value">$41.98</div>
+                </div>
+                <div class="level-box">
+                    <div class="level-label">壓力</div>
+                    <div class="level-value">$103.00</div>
+                </div>
+            </div>
+            <div class="stock-signals">
+                </div>
+        </div>
+    
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left">
+                    <div class="stock-symbol">MU</div>
+                    <div class="stock-name"></div>
+                </div>
+                <div class="stock-right">
+                    <div class="stock-price up">$724.66</div>
+                    <div class="stock-change up">+97.86%</div>
+                    
+                </div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric">
+                    <div class="metric-label">RSI</div>
+                    <div class="metric-value">70.1</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">52週區間</div>
+                    <div class="metric-value">87%</div>
+                    <div class="metric-sub">$90.93 - $818.67</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">均線</div>
+                    <div class="metric-value">多頭</div>
+                </div>
+            </div>
+            <div class="stock-levels">
+                <div class="level-box">
+                    <div class="level-label">支撐</div>
+                    <div class="level-value">$557.76</div>
+                </div>
+                <div class="level-box">
+                    <div class="level-label">壓力</div>
+                    <div class="level-value">$818.67</div>
+                </div>
+            </div>
+            <div class="stock-signals">
+                    <span class="signal-tag signal-overbought">超買</span>
+            </div>
+        </div>
+    
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left">
+                    <div class="stock-symbol">NOK</div>
+                    <div class="stock-name"></div>
+                </div>
+                <div class="stock-right">
+                    <div class="stock-price up">$13.95</div>
+                    <div class="stock-change up">+58.16%</div>
+                    
+                </div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric">
+                    <div class="metric-label">RSI</div>
+                    <div class="metric-value">68.4</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">52週區間</div>
+                    <div class="metric-value">89%</div>
+                    <div class="metric-sub">$4.00 - $15.19</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">均線</div>
+                    <div class="metric-value">多頭</div>
+                </div>
+            </div>
+            <div class="stock-levels">
+                <div class="level-box">
+                    <div class="level-label">支撐</div>
+                    <div class="level-value">$12.13</div>
+                </div>
+                <div class="level-box">
+                    <div class="level-label">壓力</div>
+                    <div class="level-value">$15.19</div>
+                </div>
+            </div>
+            <div class="stock-signals">
+                    <span class="signal-tag signal-overbought">接近超買</span>
+            </div>
+        </div>
+    
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left">
+                    <div class="stock-symbol">NVDA</div>
+                    <div class="stock-name"></div>
+                </div>
+                <div class="stock-right">
+                    <div class="stock-price up">$225.32</div>
+                    <div class="stock-change up">+27.02%</div>
+                    
+                </div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric">
+                    <div class="metric-label">RSI</div>
+                    <div class="metric-value">56.2</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">52週區間</div>
+                    <div class="metric-value">90%</div>
+                    <div class="metric-sub">$129.16 - $236.54</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">均線</div>
+                    <div class="metric-value">多頭</div>
+                </div>
+            </div>
+            <div class="stock-levels">
+                <div class="level-box">
+                    <div class="level-label">支撐</div>
+                    <div class="level-value">$194.74</div>
+                </div>
+                <div class="level-box">
+                    <div class="level-label">壓力</div>
+                    <div class="level-value">$236.54</div>
+                </div>
+            </div>
+            <div class="stock-signals">
+                </div>
+        </div>
+    
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left">
+                    <div class="stock-symbol">STM</div>
+                    <div class="stock-name"></div>
+                </div>
+                <div class="stock-right">
+                    <div class="stock-price up">$61.41</div>
+                    <div class="stock-change up">+78.93%</div>
+                    
+                </div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric">
+                    <div class="metric-label">RSI</div>
+                    <div class="metric-value">69.4</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">52週區間</div>
+                    <div class="metric-value">91%</div>
+                    <div class="metric-sub">$21.11 - $65.31</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">均線</div>
+                    <div class="metric-value">多頭</div>
+                </div>
+            </div>
+            <div class="stock-levels">
+                <div class="level-box">
+                    <div class="level-label">支撐</div>
+                    <div class="level-value">$54.61</div>
+                </div>
+                <div class="level-box">
+                    <div class="level-label">壓力</div>
+                    <div class="level-value">$65.31</div>
+                </div>
+            </div>
+            <div class="stock-signals">
+                    <span class="signal-tag signal-overbought">接近超買</span>
+            </div>
+        </div>
+    
+            <div class="alert-box">
+                <div class="alert-title">⚠️ 風險提醒</div>
+                <div class="alert-text">半導體集中 73% 為極高風險。NVDA 單一持股 29% 過度集中。現金僅 1.2% 過低。建議：NVDA 降至 20% 以下，現金提升至 10%+</div>
+            </div>
+        </div>
+
+        <!-- 價值機會 -->
+        <div class="section">
+            <div class="section-title">💎 價值機會 Top 5</div>
+            <p style='color:var(--text-secondary);font-size:0.85rem;'>價值機會分析運行中...</p>
+        </div>
+
+        <!-- 市場快評 -->
+        <div class="section">
+            <div class="section-title">🐦 市場快評</div>
+            <div class="summary-article"><p>期貨市場顯示今日開盤中性。S&P 500 期貨 +0.00%。投資人應密切關注盤中走勢。</p></div>
+        </div>
+
+        <!-- 新聞 -->
+        <div class="section">
+            <div class="section-title">📰 市場新聞</div>
+            <p style='color:var(--text-secondary);font-size:0.85rem;'>新聞載入中...</p>
+        </div>
+
+        <!-- 每日總結 -->
+        <div class="section">
+            <div class="section-title">📰 每日市場總結</div>
+            <div class="summary-article"><p>今日市場中性開盤。投資組合中半導體類股波動較大，建議適度分散風險。價值投資者可以關注超賣標的。</p></div>
+        </div>
+
+        <!-- 策略 -->
+        <div class="section">
+            <div class="section-title">🎯 今日策略</div>
+            <ul class="strategy-list"><li>觀察盤中走勢，確認趨勢方向</li><li>半導體持股過度集中，考慮獲利了結部分 NVDA</li><li>現金比例過低，暫停新增買入</li><li>關注價值機會清單中的超賣標的</li></ul>
+        </div>
+
+        <footer><p>資料僅供參考，非投資建議</p></footer>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="../../index.html"><span class="nav-icon">🏠</span>首頁</a>
+        <a href="latest.html" class="active"><span class="nav-icon">🌅</span>盤前</a>
+        <a href="../intraday/latest.html"><span class="nav-icon">📈</span>盤中</a>
+        <a href="../postmarket/latest.html"><span class="nav-icon">🌙</span>盤後</a>
+    </div>
+</body>
+</html>
