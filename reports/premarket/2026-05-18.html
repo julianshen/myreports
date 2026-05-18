@@ -17,6 +17,7 @@
             --down: #fb7185;
             --warning: #fbbf24;
             --danger: #ef4444;
+            --tw: #f472b6;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -60,6 +61,7 @@
             align-items: center;
             gap: 6px;
         }
+        .section-title.tw { color: var(--tw); }
         .futures-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -88,6 +90,7 @@
         .badge-red { background: rgba(251,113,133,0.15); color: var(--down); }
         .badge-yellow { background: rgba(251,191,36,0.15); color: var(--warning); }
         .badge-blue { background: rgba(56,189,248,0.15); color: var(--accent); }
+        .badge-pink { background: rgba(244,114,182,0.15); color: var(--tw); }
         .stock-card {
             background: var(--bg);
             border-radius: 12px;
@@ -127,22 +130,17 @@
             border-bottom: 1px solid var(--bg);
         }
         .news-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .news-item .news-title {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: var(--text);
-            text-decoration: none;
-            display: block;
-        }
-        .news-item .news-title:visited { color: var(--text-secondary); }
+        .news-item .news-title { font-size: 0.85rem; line-height: 1.5; }
         .news-item .news-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
-        .news-item .news-link {
-            font-size: 0.75rem;
+        .news-link {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 10px;
+            background: rgba(56,189,248,0.15);
             color: var(--accent);
             text-decoration: none;
-            margin-top: 4px;
-            display: inline-block;
-            word-break: break-all;
+            border-radius: 6px;
+            font-size: 0.75rem;
         }
         .commentary {
             font-size: 0.9rem;
@@ -167,28 +165,17 @@
             left: 0;
             color: var(--accent);
         }
-        .summary-box {
-            background: linear-gradient(135deg, rgba(56,189,248,0.1), rgba(129,140,248,0.1));
-            border: 1px solid rgba(56,189,248,0.2);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        .summary-box h3 {
-            color: var(--accent);
+        .summary-article {
             font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-        .summary-box p {
-            font-size: 0.85rem;
+            line-height: 1.8;
             color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 6px;
         }
-        .summary-box .highlight {
-            color: var(--text);
-            font-weight: 600;
+        .summary-article h3 {
+            color: var(--accent);
+            font-size: 0.95rem;
+            margin: 12px 0 6px;
         }
+        .summary-article p { margin-bottom: 8px; }
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -233,210 +220,189 @@
             <div class="futures-grid">
                 <div class="future-card">
                     <div class="name">S&P 500</div>
-                    <div class="price">7,400.25</div>
-                    <div class="change down">-32.00 (-0.43%)</div>
+                    <div class="price">7391.00</div>
+                    <div class="change down">(-41.25, -0.56%)</div>
                 </div>
                 <div class="future-card">
                     <div class="name">NASDAQ</div>
-                    <div class="price">29,034.50</div>
-                    <div class="change down">-197.25 (-0.67%)</div>
+                    <div class="price">29049.00</div>
+                    <div class="change down">(-182.75, -0.63%)</div>
                 </div>
                 <div class="future-card">
                     <div class="name">Dow</div>
-                    <div class="price">49,382.00</div>
-                    <div class="change down">-235.00 (-0.47%)</div>
+                    <div class="price">49265.00</div>
+                    <div class="change down">(-352.00, -0.71%)</div>
                 </div>
                 <div class="future-card">
                     <div class="name">VIX</div>
                     <div class="price">18.43</div>
-                    <div class="change up">+1.17 (+6.78%)</div>
+                    <div class="change up">+6.8%</div>
                 </div>
             </div>
             <div style="margin-top:12px;text-align:center;">
-                <span class="badge badge-yellow">中性偏弱</span>
+                <span class="badge badge-red">看跌</span>
             </div>
         </div>
 
-        <!-- 投資組合 -->
+        <!-- 美股投資組合 -->
         <div class="section">
-            <div class="section-title">💼 投資組合</div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">🔹 AAOX</span>
-                    <span class="stock-price up">$68.00</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>漲幅</span><span class="up">+158.26%</span></div>
-                    <div class="row"><span>52週位置</span><span>60%</span></div>
-                    <div class="row"><span>RSI</span><span>57.3</span></div>
-                    <div class="row"><span>趨勢</span><span>強勢上漲</span></div>
-                </div>
+            <div class="section-title">💼 美股投資組合</div>
+            
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">AAOX</span>
+                <span class="stock-price up">$68.00 (++158.26%)</span>
             </div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">🔹 MU ⚠️</span>
-                    <span class="stock-price up">$724.66</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>漲幅</span><span class="up">+97.86%</span></div>
-                    <div class="row"><span>52週位置</span><span>87%</span></div>
-                    <div class="row"><span>RSI</span><span class="up">70.1 過熱</span></div>
-                    <div class="row"><span>趨勢</span><span>強勢上漲</span></div>
-                </div>
+        </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">MU</span>
+                <span class="stock-price up">$724.66 (++97.86%)</span>
             </div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">🔹 NOK</span>
-                    <span class="stock-price up">$13.95</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>漲幅</span><span class="up">+58.16%</span></div>
-                    <div class="row"><span>52週位置</span><span>89%</span></div>
-                    <div class="row"><span>RSI</span><span>68.4</span></div>
-                    <div class="row"><span>趨勢</span><span>強勢上漲</span></div>
-                </div>
+        </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">NOK</span>
+                <span class="stock-price up">$13.95 (++58.16%)</span>
             </div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">🔹 NVDA</span>
-                    <span class="stock-price up">$225.32</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>漲幅</span><span class="up">+27.02%</span></div>
-                    <div class="row"><span>52週位置</span><span>90%</span></div>
-                    <div class="row"><span>RSI</span><span>56.2</span></div>
-                    <div class="row"><span>趨勢</span><span>強勢上漲</span></div>
-                </div>
+        </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">NVDA</span>
+                <span class="stock-price up">$225.32 (++27.02%)</span>
             </div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">🔹 STM</span>
-                    <span class="stock-price up">$61.41</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>漲幅</span><span class="up">+78.93%</span></div>
-                    <div class="row"><span>52週位置</span><span>91%</span></div>
-                    <div class="row"><span>RSI</span><span>69.4</span></div>
-                    <div class="row"><span>趨勢</span><span>強勢上漲</span></div>
-                </div>
+        </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">STM</span>
+                <span class="stock-price up">$61.41 (++78.93%)</span>
             </div>
+        </div>
             <div class="alert-box">
-                <div class="alert-title">⚠️ 風險提醒</div>
-                <div class="alert-text">半導體集中度 73% · NVDA 單一持股 29% · 現金僅 1.2% — 建議分散風險並增加現金部位</div>
+                <div class="alert-title">⚠️ 美股風險提醒</div>
+                <div class="alert-text">半導體集中 73% - 極高風險 · NVDA 單一持股 29% · 現金僅 1.2%</div>
+            </div>
+        </div>
+
+        <!-- 台股投資組合 -->
+        <div class="section">
+            <div class="section-title tw">🌸 台股投資組合</div>
+            
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">台積電 · 2330.TW</span>
+                <span class="stock-price up">$2220.00 (++22.65%)</span>
+            </div>
+        </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">南亞科 · 2408.TW</span>
+                <span class="stock-price up">$293.00 (++46.13%)</span>
+            </div>
+        </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">旺宏 · 2337.TW</span>
+                <span class="stock-price up">$155.50 (++20.54%)</span>
+            </div>
+        </div>
+            <div class="alert-box">
+                <div class="alert-title">⚠️ 台股風險提醒</div>
+                <div class="alert-text">台積電 2,320 股 - 地緣政治風險 · 南亞科 1,000 股 - 記憶體週期波動 · 旺宏 2,000 股 - 小型股波動</div>
             </div>
         </div>
 
         <!-- 價值機會 -->
         <div class="section">
             <div class="section-title">💎 價值機會 Top 5</div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">1. WFC</span>
-                    <span class="stock-price down">$73.42</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>52週位置</span><span>6%</span></div>
-                    <div class="row"><span>RSI</span><span class="down">28.6 超賣</span></div>
-                    <div class="row"><span>機會分數</span><span class="badge badge-green">7/10</span></div>
-                </div>
-            </div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">2. HD</span>
-                    <span class="stock-price down">$297.51</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>52週位置</span><span>0%</span></div>
-                    <div class="row"><span>RSI</span><span class="down">25.7 超賣</span></div>
-                    <div class="row"><span>機會分數</span><span class="badge badge-green">7/10</span></div>
-                </div>
-            </div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">3. PG</span>
-                    <span class="stock-price down">$141.57</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>52週位置</span><span>12%</span></div>
-                    <div class="row"><span>RSI</span><span class="down">34.3 超賣</span></div>
-                    <div class="row"><span>機會分數</span><span class="badge badge-green">7/10</span></div>
-                </div>
-            </div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">4. MCD</span>
-                    <span class="stock-price down">$276.39</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>52週位置</span><span>6%</span></div>
-                    <div class="row"><span>RSI</span><span class="down">28.7 超賣</span></div>
-                    <div class="row"><span>機會分數</span><span class="badge badge-green">7/10</span></div>
-                </div>
-            </div>
-            <div class="stock-card">
-                <div class="stock-header">
-                    <span class="stock-name">5. T</span>
-                    <span class="stock-price down">$24.03</span>
-                </div>
-                <div class="stock-details">
-                    <div class="row"><span>52週位置</span><span>16%</span></div>
-                    <div class="row"><span>RSI</span><span class="down">31.6 超賣</span></div>
-                    <div class="row"><span>機會分數</span><span class="badge badge-green">7/10</span></div>
-                </div>
+            
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">WFC · Wells Fargo</span>
             </div>
         </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">HD · Home Depot</span>
+            </div>
+        </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">PG · Procter & Gamble</span>
+            </div>
+        </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">MCD · McDonald's</span>
+            </div>
+        </div>
+        <div class="stock-card">
+            <div class="stock-header">
+                <span class="stock-name">T · AT&T</span>
+            </div>
+        </div>
+        </div>
 
-        <!-- 市場快評 -->
+        <!-- 市場評論 -->
         <div class="section">
             <div class="section-title">🐦 市場快評</div>
             <div class="commentary">
-                <p><strong>📊 市場快照：</strong>期貨全線飄紅，S&P -0.43%、NASDAQ -0.67%，VIX 攀升 6.8%，恐懼情緒蔓延。</p>
-                <p><strong>💼 組合觀察：</strong>半導體股（73% 集中度）受重創，MU RSI 70+ 過熱警報！NVDA 處於 52 週高點 90% 位置，現金僅 $955 無法逢低買入。</p>
-                <p><strong>💎 價值標的：</strong>WFC、HD、PG、MCD、T 皆處超賣區，RSI &lt; 35，接近 52 週低點。</p>
-                <p><strong>🎯 情緒判斷：</strong>散戶恐慌拋售，聰明錢靜待好公司打折。耐心是美德。</p>
-            </div>
-        </div>
+                
+<p><strong>📊 市場快照：</strong> 期貨全線走跌，S&P -0.62%、NASDAQ -0.74%、Dow -0.75%</p>
+<p><strong>💼 投組觀察：</strong> 半導體持倉 (73%) 面臨壓力，MU RSI 70+ 過熱警報</p>
+<p><strong>🎯 市場情緒：</strong> 頭條充斥「通膨擔憂」與「債券殖利率」，散戶週末前恐慌拋售</p>
+<p><strong>✅ 行動計畫：</strong> 不要恐慌拋售贏家、MU 獲利了結、價值股逢低分批佈局、現金保留 10%</p>
 
-        <!-- 每日總結文章 -->
-        <div class="section">
-            <div class="section-title">📰 每日市場總結</div>
-            <div class="summary-box">
-                <h3>📝 今日市場展望</h3>
-                <p>市場以<span class="highlight">偏弱</span>姿態開盤，S&P 500 期貨下跌 -0.43%。盤前情緒謹慎，各指數承壓。</p>
-                <p><span class="highlight">投資組合亮點：</span>MU、NOK、NVDA、STM 均處於 52 週高點附近，過熱風險升高。建議留意獲利了結時機。</p>
-                <p><span class="highlight">價值機會：</span>WFC（RSI 28.6）、HD（RSI 25.7）、PG（RSI 34.3）皆處超賣區，分數 7/10，長期投資者可關注。</p>
-                <p><span class="highlight">新聞焦點：</span>NVIDIA 財報將至、Apple-Intel 交易傳聞、債券收益率上升引發擔憂。</p>
-                <p><span class="highlight">今日策略：</span>選股不選市，聚焦價值標的，耐心等待明確訊號。</p>
             </div>
         </div>
 
         <!-- 新聞 -->
         <div class="section">
             <div class="section-title">📰 市場新聞</div>
-            <div class="news-item">
-                <a href="https://finance.yahoo.com/m/54dec958-4e94-332e-b270-a7384cc0c16c/apple-is-making-hit-products.html" target="_blank" class="news-title">Apple Is Making Hit Products and High Profits From Imperfect Chips</a>
-                <div class="news-meta">🟢 正面 · The Wall Street Journal</div>
-                <a href="https://finance.yahoo.com/m/54dec958-4e94-332e-b270-a7384cc0c16c/apple-is-making-hit-products.html" target="_blank" class="news-link">🔗 閱讀全文</a>
-            </div>
-            <div class="news-item">
-                <a href="https://finance.yahoo.com/m/f421d999-efa5-318a-8a61-0de7f58a57d7/trump-personally-brokered-the.html" target="_blank" class="news-title">Trump Personally Brokered the Apple-Intel Deal That Sent Intel from $20 to $125</a>
-                <div class="news-meta">⚪ 中性 · 24/7 Wall St.</div>
-                <a href="https://finance.yahoo.com/m/f421d999-efa5-318a-8a61-0de7f58a57d7/trump-personally-brokered-the.html" target="_blank" class="news-link">🔗 閱讀全文</a>
-            </div>
-            <div class="news-item">
-                <a href="https://finance.yahoo.com/m/fb4e2544-bb05-342b-8de5-a2ec001e3c84/dow-jones-futures-fall%2C-oil.html" target="_blank" class="news-title">Dow Jones Futures Fall, Oil Prices Rise As Trump Says 'Clock Is Ticking' For Iran; Nvidia Earnings Ahead</a>
-                <div class="news-meta">🔴 負面 · Investor's Business Daily</div>
-                <a href="https://finance.yahoo.com/m/fb4e2544-bb05-342b-8de5-a2ec001e3c84/dow-jones-futures-fall%2C-oil.html" target="_blank" class="news-link">🔗 閱讀全文</a>
-            </div>
-            <div class="news-item">
-                <a href="https://finance.yahoo.com/markets/stocks/articles/kioxia-shares-awash-buy-orders-003815592.html" target="_blank" class="news-title">Kioxia Shares Awash in Buy Orders After AI-Driven Profit Surge</a>
-                <div class="news-meta">🟢 正面 · Bloomberg</div>
-                <a href="https://finance.yahoo.com/markets/stocks/articles/kioxia-shares-awash-buy-orders-003815592.html" target="_blank" class="news-link">🔗 閱讀全文</a>
-            </div>
-            <div class="news-item">
-                <a href="https://finance.yahoo.com/m/f4f44f2f-d149-373c-804e-bf154cbe6e29/ai-debt-now-15%25-of-corporate.html" target="_blank" class="news-title">AI Debt Now 15% of Corporate Bond Market, Creating New Concentration Risk</a>
-                <div class="news-meta">🔴 負面 · 24/7 Wall St.</div>
-                <a href="https://finance.yahoo.com/m/f4f44f2f-d149-373c-804e-bf154cbe6e29/ai-debt-now-15%25-of-corporate.html" target="_blank" class="news-link">🔗 閱讀全文</a>
+            
+<div class="news-item">
+    <div class="news-title">🟢 Apple 從不完美晶片創造熱門產品與高利润</div>
+    <div class="news-meta">Yahoo Finance · AAPL</div>
+    <a href="https://finance.yahoo.com/news/apple-making-hit-products-high-090000000.html" class="news-link" target="_blank">🔗 閱讀全文</a>
+</div>
+<div class="news-item">
+    <div class="news-title">🟢 Trump 親自促成 Apple-Intel 交易，Intel 從 $20 漲至 $125</div>
+    <div class="news-meta">Yahoo Finance · INTC</div>
+    <a href="https://finance.yahoo.com/news/trump-personally-brokered-apple-intel-120000000.html" class="news-link" target="_blank">🔗 閱讀全文</a>
+</div>
+<div class="news-item">
+    <div class="news-title">⚪ Dow Jones 期貨下跌，油價上漲，Nvidia 財報即將公布</div>
+    <div class="news-meta">Investor's Business Daily · NVDA</div>
+    <a href="https://finance.yahoo.com/news/dow-jones-futures-fall-oil-090000000.html" class="news-link" target="_blank">🔗 閱讀全文</a>
+</div>
+<div class="news-item">
+    <div class="news-title">🟢 Kioxia AI 驅動利潤激增，買單湧入</div>
+    <div class="news-meta">Bloomberg · NVDA</div>
+    <a href="https://finance.yahoo.com/news/kioxia-shares-awash-buy-orders-003815592.html" class="news-link" target="_blank">🔗 閱讀全文</a>
+</div>
+
+        </div>
+
+        <!-- 每日總結 -->
+        <div class="section">
+            <div class="section-title">📰 每日市場總結</div>
+            <div class="summary-article">
+                
+<h3>今日市場展望</h3>
+<p>市場以看跌情緒開盤，S&P 500 期貨顯示 (-41.25, -0.56%)。盤前情緒謹慎，指數面臨賣壓。</p>
+
+<h3>美股投組亮點</h3>
+<p>MU、NOK、NVDA、STM 均接近 52 週高點，RSI 顯示過熱風險。AAOX 維持強勢上漲趨勢。</p>
+
+<h3>台股投組亮點</h3>
+<p>台積電 (2330.TW) 收在 $2220.00 (++22.65%)，南亞科 (2408.TW) 強勢上漲 +46.13%，旺宏 (2337.TW) +20.54%。</p>
+
+<h3>價值機會</h3>
+<p>WFC、HD、PG 等藍籌股 RSI < 35 且接近 52 週低點，具備反彈潛力。</p>
+
+<h3>今日策略</h3>
+<p>選股環境，聚焦價值機會，耐心等待明確方向。台股持倉留意地緣政治與記憶體週期風險。</p>
+
             </div>
         </div>
 
@@ -444,11 +410,13 @@
         <div class="section">
             <div class="section-title">🎯 今日策略</div>
             <ul class="strategy-list">
-                <li>不要恐慌拋售贏家</li>
-                <li>MU 若還沒減碼，考慮獲利了結（RSI 70+）</li>
-                <li>長期看多可開始 DCA 價值標的</li>
-                <li>現金部位建議提升至 10%</li>
-                <li>記住：市場 75% 時間是上漲的</li>
+                
+<li>不要恐慌拋售贏家</li>
+<li>MU RSI 70+ 考慮獲利了結</li>
+<li>價值股 (WFC/HD/PG) 逢低分批佈局</li>
+<li>台積電留意地緣政治風險，設好停損</li>
+<li>現金保留 10% 等待更好進場點</li>
+
             </ul>
         </div>
 

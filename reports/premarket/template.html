@@ -17,6 +17,7 @@
             --down: #fb7185;
             --warning: #fbbf24;
             --danger: #ef4444;
+            --tw: #f472b6;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -60,6 +61,7 @@
             align-items: center;
             gap: 6px;
         }
+        .section-title.tw { color: var(--tw); }
         .futures-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -88,6 +90,7 @@
         .badge-red { background: rgba(251,113,133,0.15); color: var(--down); }
         .badge-yellow { background: rgba(251,191,36,0.15); color: var(--warning); }
         .badge-blue { background: rgba(56,189,248,0.15); color: var(--accent); }
+        .badge-pink { background: rgba(244,114,182,0.15); color: var(--tw); }
         .stock-card {
             background: var(--bg);
             border-radius: 12px;
@@ -129,6 +132,16 @@
         .news-item:last-child { border-bottom: none; padding-bottom: 0; }
         .news-item .news-title { font-size: 0.85rem; line-height: 1.5; }
         .news-item .news-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
+        .news-link {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 10px;
+            background: rgba(56,189,248,0.15);
+            color: var(--accent);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
         .commentary {
             font-size: 0.9rem;
             line-height: 1.8;
@@ -152,6 +165,17 @@
             left: 0;
             color: var(--accent);
         }
+        .summary-article {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .summary-article h3 {
+            color: var(--accent);
+            font-size: 0.95rem;
+            margin: 12px 0 6px;
+        }
+        .summary-article p { margin-bottom: 8px; }
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -220,13 +244,23 @@
             </div>
         </div>
 
-        <!-- 投資組合 -->
+        <!-- 美股投資組合 -->
         <div class="section">
-            <div class="section-title">💼 投資組合</div>
-            {{PORTFOLIO_CARDS}}
+            <div class="section-title">💼 美股投資組合</div>
+            {{US_PORTFOLIO_CARDS}}
             <div class="alert-box">
-                <div class="alert-title">⚠️ 風險提醒</div>
-                <div class="alert-text">{{RISK_ALERT}}</div>
+                <div class="alert-title">⚠️ 美股風險提醒</div>
+                <div class="alert-text">{{US_RISK_ALERT}}</div>
+            </div>
+        </div>
+
+        <!-- 台股投資組合 -->
+        <div class="section">
+            <div class="section-title tw">🌸 台股投資組合</div>
+            {{TW_PORTFOLIO_CARDS}}
+            <div class="alert-box">
+                <div class="alert-title">⚠️ 台股風險提醒</div>
+                <div class="alert-text">{{TW_RISK_ALERT}}</div>
             </div>
         </div>
 
@@ -248,6 +282,14 @@
         <div class="section">
             <div class="section-title">📰 市場新聞</div>
             {{NEWS_ITEMS}}
+        </div>
+
+        <!-- 每日總結 -->
+        <div class="section">
+            <div class="section-title">📰 每日市場總結</div>
+            <div class="summary-article">
+                {{SUMMARY_ARTICLE}}
+            </div>
         </div>
 
         <!-- 策略 -->
