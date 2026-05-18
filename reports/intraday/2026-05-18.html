@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>盤中監控 - 2026-05-18</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --card-hover: #334155;
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent2: #818cf8;
+            --up: #34d399;
+            --down: #fb7185;
+            --warning: #fbbf24;
+            --danger: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 80px; }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+        header {
+            padding: 8px 0 16px;
+            border-bottom: 1px solid var(--card);
+            margin-bottom: 16px;
+        }
+        header h1 { font-size: 1.4rem; font-weight: 700; }
+        header .meta { color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px; }
+        .section {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .market-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .market-card {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        .market-card .name { font-size: 0.75rem; color: var(--text-secondary); }
+        .market-card .price { font-size: 1.1rem; font-weight: 700; margin: 4px 0; }
+        .market-card .change { font-size: 0.8rem; font-weight: 600; }
+        .up { color: var(--up); }
+        .down { color: var(--down); }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-green { background: rgba(52,211,153,0.15); color: var(--up); }
+        .badge-red { background: rgba(251,113,133,0.15); color: var(--down); }
+        .badge-yellow { background: rgba(251,191,36,0.15); color: var(--warning); }
+        .stock-card {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+        .stock-card:last-child { margin-bottom: 0; }
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .stock-name { font-weight: 700; font-size: 1rem; }
+        .stock-price { font-weight: 700; font-size: 1.1rem; }
+        .stock-details {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .stock-details .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .alert-box {
+            background: rgba(239,68,68,0.1);
+            border-left: 3px solid var(--danger);
+            padding: 12px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 12px;
+        }
+        .alert-box .alert-title { color: var(--danger); font-weight: 700; font-size: 0.85rem; }
+        .alert-box .alert-text { color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px; }
+        .watchlist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--bg);
+        }
+        .watchlist-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .watchlist-item .name { font-weight: 600; font-size: 0.9rem; }
+        .watchlist-item .price { font-weight: 700; }
+        .watchlist-item .levels { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--bg);
+            font-size: 0.9rem;
+        }
+        .summary-row:last-child { border-bottom: none; }
+        .summary-row .value { font-weight: 700; }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            border-top: 1px solid var(--bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .bottom-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 4px 12px;
+        }
+        .bottom-nav a.active { color: var(--accent); }
+        .bottom-nav .nav-icon { font-size: 1.3rem; display: block; margin-bottom: 2px; }
+        footer {
+            text-align: center;
+            padding: 24px 16px;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="back-btn">← 返回儀表板</a>
+        <header>
+            <h1>📈 盤中監控</h1>
+            <div class="meta">2026-05-18 · 美東時間 9:00 更新</div>
+        </header>
+
+        <!-- 市場概況 -->
+        <div class="section">
+            <div class="section-title">🌐 市場概況</div>
+            <div class="market-grid">
+                <div class="market-card">
+                    <div class="name">S&P 500</div>
+                    <div class="price">7,408.50</div>
+                    <div class="change down">-92.74 (-1.24%)</div>
+                </div>
+                <div class="market-card">
+                    <div class="name">NASDAQ</div>
+                    <div class="price">26,225.15</div>
+                    <div class="change down">-410.06 (-1.54%)</div>
+                </div>
+                <div class="market-card">
+                    <div class="name">Dow</div>
+                    <div class="price">49,526.17</div>
+                    <div class="change down">-537.33 (-1.07%)</div>
+                </div>
+                <div class="market-card">
+                    <div class="name">VIX</div>
+                    <div class="price">18.43</div>
+                    <div class="change up">+1.17 (+6.78%)</div>
+                </div>
+            </div>
+            <div style="margin-top:12px;text-align:center;">
+                <span class="badge badge-red">賣壓出籠</span>
+            </div>
+        </div>
+
+        <!-- 投資組合 -->
+        <div class="section">
+            <div class="section-title">💼 投資組合</div>
+            <div class="stock-card">
+                <div class="stock-header">
+                    <span class="stock-name">🔹 AAOX</span>
+                    <span class="stock-price down">$68.00</span>
+                </div>
+                <div class="stock-details">
+                    <div class="row"><span>今日漲跌</span><span class="down">-12.82%</span></div>
+                    <div class="row"><span>持倉</span><span>220 股 @ $50.00</span></div>
+                    <div class="row"><span>市值 / 損益</span><span class="up">$14,960 / +$3,960</span></div>
+                </div>
+            </div>
+            <div class="stock-card">
+                <div class="stock-header">
+                    <span class="stock-name">🔹 MU</span>
+                    <span class="stock-price down">$724.66</span>
+                </div>
+                <div class="stock-details">
+                    <div class="row"><span>今日漲跌</span><span class="down">-6.62%</span></div>
+                    <div class="row"><span>持倉</span><span>30 股 @ $500.00</span></div>
+                    <div class="row"><span>市值 / 損益</span><span class="up">$21,740 / +$6,740</span></div>
+                </div>
+            </div>
+            <div class="stock-card">
+                <div class="stock-header">
+                    <span class="stock-name">🔹 NOK</span>
+                    <span class="stock-price down">$13.95</span>
+                </div>
+                <div class="stock-details">
+                    <div class="row"><span>今日漲跌</span><span class="down">-3.53%</span></div>
+                    <div class="row"><span>持倉</span><span>400 股 @ $10.00</span></div>
+                    <div class="row"><span>市值 / 損益</span><span class="up">$5,580 / +$1,580</span></div>
+                </div>
+            </div>
+            <div class="stock-card">
+                <div class="stock-header">
+                    <span class="stock-name">🔹 NVDA</span>
+                    <span class="stock-price down">$225.32</span>
+                </div>
+                <div class="stock-details">
+                    <div class="row"><span>今日漲跌</span><span class="down">-4.42%</span></div>
+                    <div class="row"><span>持倉</span><span>100 股 @ $180.00</span></div>
+                    <div class="row"><span>市值 / 損益</span><span class="up">$22,532 / +$4,532</span></div>
+                </div>
+            </div>
+            <div class="stock-card">
+                <div class="stock-header">
+                    <span class="stock-name">🔹 STM</span>
+                    <span class="stock-price down">$61.41</span>
+                </div>
+                <div class="stock-details">
+                    <div class="row"><span>今日漲跌</span><span class="down">-4.61%</span></div>
+                    <div class="row"><span>持倉</span><span>200 股 @ $45.00</span></div>
+                    <div class="row"><span>市值 / 損益</span><span class="up">$12,282 / +$3,282</span></div>
+                </div>
+            </div>
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bg);">
+                <div class="summary-row">
+                    <span>總市值</span>
+                    <span class="value">$77,093.80</span>
+                </div>
+                <div class="summary-row">
+                    <span>總成本</span>
+                    <span>$57,000.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>總損益</span>
+                    <span class="value up">+$20,093.80 (+35.25%)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 觀察清單 -->
+        <div class="section">
+            <div class="section-title">👁️ 觀察清單</div>
+            <div class="watchlist-item">
+                <div>
+                    <div class="name">WFC</div>
+                    <div class="levels">支撐 $70 · 壓力 $80</div>
+                </div>
+                <div class="price down">$73.42</div>
+            </div>
+            <div class="watchlist-item">
+                <div>
+                    <div class="name">HD</div>
+                    <div class="levels">支撐 $290 · 壓力 $320</div>
+                </div>
+                <div class="price down">$297.51</div>
+            </div>
+            <div class="watchlist-item">
+                <div>
+                    <div class="name">PG</div>
+                    <div class="levels">支撐 $135 · 壓力 $150</div>
+                </div>
+                <div class="price down">$141.57</div>
+            </div>
+            <div class="watchlist-item">
+                <div>
+                    <div class="name">MCD</div>
+                    <div class="levels">支撐 $270 · 壓力 $300</div>
+                </div>
+                <div class="price up">$276.39</div>
+            </div>
+            <div class="watchlist-item">
+                <div>
+                    <div class="name">T</div>
+                    <div class="levels">支撐 $23 · 壓力 $27</div>
+                </div>
+                <div class="price down">$24.03</div>
+            </div>
+        </div>
+
+        <!-- 警報 -->
+        <div class="section">
+            <div class="section-title">🚨 觸發警報</div>
+            <div class="alert-box">
+                <div class="alert-title">📉 大幅下跌</div>
+                <div class="alert-text">AAOX 今日 -12.82%，成交量 37.4 倍平均 — 留意反轉或突破確認</div>
+            </div>
+            <div class="alert-box" style="margin-top:10px;">
+                <div class="alert-title">📉 大幅下跌</div>
+                <div class="alert-text">MU 今日 -6.62%，成交量 5.5 倍平均</div>
+            </div>
+            <div class="alert-box" style="margin-top:10px;">
+                <div class="alert-title">⚡ 巨量成交</div>
+                <div class="alert-text">NVDA 成交量 36.0 倍平均，NOK 9.3 倍，STM 6.8 倍</div>
+            </div>
+        </div>
+
+        <!-- 風險管理 -->
+        <div class="section">
+            <div class="section-title">⚠️ 風險檢查</div>
+            <div class="summary-row">
+                <span>NVDA 集中度</span>
+                <span class="value down">29.2% 過高</span>
+            </div>
+            <div class="summary-row">
+                <span>半導體集中度</span>
+                <span class="value down">73.4% 過高</span>
+            </div>
+            <div class="summary-row">
+                <span>組合損益</span>
+                <span class="value up">+35.25% 獲利</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>資料僅供參考，非投資建議</p>
+        </footer>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="../../index.html"><span class="nav-icon">🏠</span>首頁</a>
+        <a href="../premarket/latest.html"><span class="nav-icon">🌅</span>盤前</a>
+        <a href="latest.html" class="active"><span class="nav-icon">📈</span>盤中</a>
+    </div>
+</body>
+</html>

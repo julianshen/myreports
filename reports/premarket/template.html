@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>盤前分析 - {{DATE}}</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --card-hover: #334155;
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent2: #818cf8;
+            --up: #34d399;
+            --down: #fb7185;
+            --warning: #fbbf24;
+            --danger: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 80px; }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+        header {
+            padding: 8px 0 16px;
+            border-bottom: 1px solid var(--card);
+            margin-bottom: 16px;
+        }
+        header h1 { font-size: 1.4rem; font-weight: 700; }
+        header .meta { color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px; }
+        .section {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .futures-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .future-card {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        .future-card .name { font-size: 0.75rem; color: var(--text-secondary); }
+        .future-card .price { font-size: 1.1rem; font-weight: 700; margin: 4px 0; }
+        .future-card .change { font-size: 0.8rem; font-weight: 600; }
+        .up { color: var(--up); }
+        .down { color: var(--down); }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-green { background: rgba(52,211,153,0.15); color: var(--up); }
+        .badge-red { background: rgba(251,113,133,0.15); color: var(--down); }
+        .badge-yellow { background: rgba(251,191,36,0.15); color: var(--warning); }
+        .badge-blue { background: rgba(56,189,248,0.15); color: var(--accent); }
+        .stock-card {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+        .stock-card:last-child { margin-bottom: 0; }
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .stock-name { font-weight: 700; font-size: 1rem; }
+        .stock-price { font-weight: 700; font-size: 1.1rem; }
+        .stock-details {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .stock-details .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .alert-box {
+            background: rgba(239,68,68,0.1);
+            border-left: 3px solid var(--danger);
+            padding: 12px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 12px;
+        }
+        .alert-box .alert-title { color: var(--danger); font-weight: 700; font-size: 0.85rem; }
+        .alert-box .alert-text { color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px; }
+        .news-item {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--bg);
+        }
+        .news-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .news-item .news-title { font-size: 0.85rem; line-height: 1.5; }
+        .news-item .news-meta { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
+        .commentary {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .commentary p { margin-bottom: 8px; }
+        .commentary strong { color: var(--text); }
+        .strategy-list {
+            list-style: none;
+        }
+        .strategy-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .strategy-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            border-top: 1px solid var(--bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .bottom-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 4px 12px;
+        }
+        .bottom-nav a.active { color: var(--accent); }
+        .bottom-nav .nav-icon { font-size: 1.3rem; display: block; margin-bottom: 2px; }
+        footer {
+            text-align: center;
+            padding: 24px 16px;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="back-btn">← 返回儀表板</a>
+        <header>
+            <h1>🌅 盤前分析</h1>
+            <div class="meta">{{DATE}} · 美東時間 8:30 生成</div>
+        </header>
+
+        <!-- 指數期貨 -->
+        <div class="section">
+            <div class="section-title">📊 指數期貨</div>
+            <div class="futures-grid">
+                <div class="future-card">
+                    <div class="name">S&P 500</div>
+                    <div class="price">{{SPX_PRICE}}</div>
+                    <div class="change {{SPX_CHANGE_CLASS}}">{{SPX_CHANGE}}</div>
+                </div>
+                <div class="future-card">
+                    <div class="name">NASDAQ</div>
+                    <div class="price">{{NDX_PRICE}}</div>
+                    <div class="change {{NDX_CHANGE_CLASS}}">{{NDX_CHANGE}}</div>
+                </div>
+                <div class="future-card">
+                    <div class="name">Dow</div>
+                    <div class="price">{{DJI_PRICE}}</div>
+                    <div class="change {{DJI_CHANGE_CLASS}}">{{DJI_CHANGE}}</div>
+                </div>
+                <div class="future-card">
+                    <div class="name">VIX</div>
+                    <div class="price">{{VIX_PRICE}}</div>
+                    <div class="change {{VIX_CHANGE_CLASS}}">{{VIX_CHANGE}}</div>
+                </div>
+            </div>
+            <div style="margin-top:12px;text-align:center;">
+                <span class="badge {{BIAS_CLASS}}">{{BIAS}}</span>
+            </div>
+        </div>
+
+        <!-- 投資組合 -->
+        <div class="section">
+            <div class="section-title">💼 投資組合</div>
+            {{PORTFOLIO_CARDS}}
+            <div class="alert-box">
+                <div class="alert-title">⚠️ 風險提醒</div>
+                <div class="alert-text">{{RISK_ALERT}}</div>
+            </div>
+        </div>
+
+        <!-- 價值機會 -->
+        <div class="section">
+            <div class="section-title">💎 價值機會 Top 5</div>
+            {{VALUE_CARDS}}
+        </div>
+
+        <!-- 市場評論 -->
+        <div class="section">
+            <div class="section-title">🐦 市場快評</div>
+            <div class="commentary">
+                {{COMMENTARY}}
+            </div>
+        </div>
+
+        <!-- 新聞 -->
+        <div class="section">
+            <div class="section-title">📰 市場新聞</div>
+            {{NEWS_ITEMS}}
+        </div>
+
+        <!-- 策略 -->
+        <div class="section">
+            <div class="section-title">🎯 今日策略</div>
+            <ul class="strategy-list">
+                {{STRATEGY_ITEMS}}
+            </ul>
+        </div>
+
+        <footer>
+            <p>資料僅供參考，非投資建議</p>
+        </footer>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="../../index.html"><span class="nav-icon">🏠</span>首頁</a>
+        <a href="latest.html" class="active"><span class="nav-icon">🌅</span>盤前</a>
+        <a href="../intraday/latest.html"><span class="nav-icon">📈</span>盤中</a>
+    </div>
+</body>
+</html>
