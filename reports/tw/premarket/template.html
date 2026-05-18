@@ -156,8 +156,11 @@
             position: fixed; bottom: 0; left: 0; right: 0;
             background: var(--card); border-top: 1px solid var(--border);
             display: flex; justify-content: space-around; padding: 10px 0;
-            max-width: 480px; margin: 0 auto;
             z-index: 100;
+        }
+        .bottom-nav-inner {
+            max-width: 480px; margin: 0 auto;
+            display: flex; justify-content: space-around; width: 100%;
         }
         .bottom-nav a {
             color: var(--text-secondary); text-decoration: none;
@@ -251,10 +254,12 @@
     </div>
 
     <div class="bottom-nav">
+        <div class="bottom-nav-inner">
         <a href="../../index.html"><span class="nav-icon">🏠</span>首頁</a>
         <a href="latest.html" class="active"><span class="nav-icon">🌅</span>盤前</a>
         <a href="../intraday/latest.html"><span class="nav-icon">📈</span>盤中</a>
         <a href="../postmarket/latest.html"><span class="nav-icon">🌙</span>盤後</a>
+        </div>
     </div>
 </body>
 </html>

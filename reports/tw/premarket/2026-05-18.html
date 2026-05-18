@@ -156,8 +156,11 @@
             position: fixed; bottom: 0; left: 0; right: 0;
             background: var(--card); border-top: 1px solid var(--border);
             display: flex; justify-content: space-around; padding: 10px 0;
-            max-width: 480px; margin: 0 auto;
             z-index: 100;
+        }
+        .bottom-nav-inner {
+            max-width: 480px; margin: 0 auto;
+            display: flex; justify-content: space-around; width: 100%;
         }
         .bottom-nav a {
             color: var(--text-secondary); text-decoration: none;
@@ -183,8 +186,8 @@
             <div class="index-grid">
                 <div class="index-card">
                     <div class="name">加權指數</div>
-                    <div class="price">40992.78</div>
-                    <div class="change down">-0.44%</div>
+                    <div class="price">40937.96</div>
+                    <div class="change down">-0.57%</div>
                 </div>
                 <div class="index-card">
                     <div class="name">櫃買指數</div>
@@ -203,7 +206,7 @@
                 </div>
             </div>
             <div style="margin-top:12px;text-align:center;">
-                <span class="badge badge-yellow">中性</span>
+                <span class="badge badge-red">偏空</span>
             </div>
         </div>
 
@@ -259,19 +262,19 @@
                     <div class="stock-name">南亞科</div>
                 </div>
                 <div class="stock-right">
-                    <div class="stock-price up">$300.50</div>
-                    <div class="stock-change up">+49.88%</div>
+                    <div class="stock-price up">$302.00</div>
+                    <div class="stock-change up">+50.62%</div>
                     <div class="stock-position">1000 股</div>
                 </div>
             </div>
             <div class="stock-metrics">
                 <div class="metric">
                     <div class="metric-label">RSI</div>
-                    <div class="metric-value">66.4</div>
+                    <div class="metric-value">66.9</div>
                 </div>
                 <div class="metric">
                     <div class="metric-label">52週區間</div>
-                    <div class="metric-value">83%</div>
+                    <div class="metric-value">84%</div>
                     <div class="metric-sub">$40.20 - $353.00</div>
                 </div>
                 <div class="metric">
@@ -301,15 +304,15 @@
                     <div class="stock-name">旺宏</div>
                 </div>
                 <div class="stock-right">
-                    <div class="stock-price up">$159.50</div>
-                    <div class="stock-change up">+23.64%</div>
+                    <div class="stock-price up">$160.00</div>
+                    <div class="stock-change up">+24.03%</div>
                     <div class="stock-position">2000 股</div>
                 </div>
             </div>
             <div class="stock-metrics">
                 <div class="metric">
                     <div class="metric-label">RSI</div>
-                    <div class="metric-value">56.6</div>
+                    <div class="metric-value">56.8</div>
                 </div>
                 <div class="metric">
                     <div class="metric-label">52週區間</div>
@@ -350,7 +353,7 @@
         <!-- 市場快評 -->
         <div class="section">
             <div class="section-title">🐦 市場快評</div>
-            <div class="summary-article"><p>台股今日中性開盤。加權指數 -0.44%。投資人應關注台積電走勢對大盤的影響。</p></div>
+            <div class="summary-article"><p>台股今日偏空開盤。加權指數 -0.57%。投資人應關注台積電走勢對大盤的影響。</p></div>
         </div>
 
         <!-- 新聞 -->
@@ -362,7 +365,7 @@
         <!-- 每日總結 -->
         <div class="section">
             <div class="section-title">📰 每日市場總結</div>
-            <div class="summary-article"><p>今日台股中性開盤。台積電作為權值股對大盤影響重大。記憶體族群（南亞科、旺宏）受景氣循環影響較大，需留意產業動態。</p></div>
+            <div class="summary-article"><p>今日台股偏空開盤。台積電作為權值股對大盤影響重大。記憶體族群（南亞科、旺宏）受景氣循環影響較大，需留意產業動態。</p></div>
         </div>
 
         <!-- 策略 -->
@@ -375,10 +378,12 @@
     </div>
 
     <div class="bottom-nav">
+        <div class="bottom-nav-inner">
         <a href="../../index.html"><span class="nav-icon">🏠</span>首頁</a>
         <a href="latest.html" class="active"><span class="nav-icon">🌅</span>盤前</a>
         <a href="../intraday/latest.html"><span class="nav-icon">📈</span>盤中</a>
         <a href="../postmarket/latest.html"><span class="nav-icon">🌙</span>盤後</a>
+        </div>
     </div>
 </body>
 </html>
