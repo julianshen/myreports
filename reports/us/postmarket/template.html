@@ -27,7 +27,38 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
-        .container { max-width: 480px; margin: 0 auto; padding: 16px; padding-bottom: 90px; }
+                .container { 
+            max-width: 480px; 
+            margin: 0 auto; 
+            padding: clamp(12px, 3vw, 20px); 
+            padding-bottom: 90px; 
+        }
+        
+        /* Responsive font sizes */
+        @media (max-width: 360px) {
+            html { font-size: 14px; }
+        }
+        @media (min-width: 361px) and (max-width: 430px) {
+            html { font-size: 15px; }
+        }
+        @media (min-width: 431px) {
+            html { font-size: 16px; }
+        }
+        
+        /* Tablet and desktop */
+        @media (min-width: 768px) {
+            .container { 
+                max-width: 640px; 
+                padding: 24px;
+                padding-bottom: 100px;
+            }
+            .stock-metrics {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .index-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
         .back-btn {
             display: inline-flex; align-items: center; gap: 6px;
             color: var(--accent); text-decoration: none; font-size: 0.9rem;
@@ -43,13 +74,21 @@
             margin-bottom: 12px;
         }
         .section {
-            background: var(--card); border-radius: 16px; padding: 16px;
-            margin-bottom: 12px; border: 1px solid var(--border);
+            background: var(--card); 
+            border-radius: clamp(12px, 3vw, 16px); 
+            padding: clamp(12px, 3vw, 16px);
+            margin-bottom: clamp(10px, 2.5vw, 12px); 
+            border: 1px solid var(--border);
         }
         .section-title {
-            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
-            color: var(--accent); margin-bottom: 12px;
-            display: flex; align-items: center; gap: 6px;
+            font-size: clamp(0.75rem, 2vw, 0.85rem); 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            color: var(--accent); 
+            margin-bottom: clamp(10px, 2.5vw, 12px);
+            display: flex; 
+            align-items: center; 
+            gap: 6px;
         }
         .index-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .index-card {
