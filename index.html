@@ -593,54 +593,27 @@
         // Fetch stock data from Yahoo Finance via CORS proxy
         async function fetchStockData(symbol) {
             try {
-                // Use Yahoo Finance query1 endpoint with proper headers
-                const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=2d`;
-                const response = await fetch(url, {
-                    headers: {
-                        'Accept': 'application/json',
-                    }
-                });
-                if (!response.ok) {
-                    // Fallback: try with no-cors for preflight issues
-                    throw new Error('HTTP ' + response.status);
-                }
+                // Use a CORS proxy to access Yahoo Finance
+                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                const yahooUrl = encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=2d`);
+                const response = await fetch(proxyUrl + yahooUrl);
+                if (!response.ok) throw new Error('HTTP ' + response.status);
                 const data = await response.json();
                 if (data.chart && data.chart.result && data.chart.result[0]) {
                     const result = data.chart.result[0];
                     const meta = result.meta;
                     const quote = result.indicators.quote[0];
-                    const lastPrice = meta.regularMarketPrice || meta.currentPrice || quote.close.filter(x => x !== null).pop();
+                    const closes = quote.close.filter(x => x !== null);
+                    const lastPrice = meta.regularMarketPrice || meta.currentPrice || closes[closes.length - 1];
                     const prevClose = meta.previousClose || meta.chartPreviousClose || meta.regularMarketPreviousClose;
                     if (lastPrice && prevClose) {
                         const change = lastPrice - prevClose;
                         const changePct = (change / prevClose) * 100;
-                        return {
-                            price: lastPrice,
-                            change: change,
-                            changePct: changePct,
-                            prevClose: prevClose
-                        };
+                        return { price: lastPrice, change: change, changePct: changePct, prevClose: prevClose };
                     }
                 }
             } catch (e) {
                 console.error('Error fetching', symbol, e);
-                // Try alternative: use a simple quote endpoint
-                try {
-                    const quoteUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`;
-                    const response = await fetch(quoteUrl);
-                    const data = await response.json();
-                    if (data.quoteResponse && data.quoteResponse.result && data.quoteResponse.result[0]) {
-                        const q = data.quoteResponse.result[0];
-                        return {
-                            price: q.regularMarketPrice,
-                            change: q.regularMarketChange,
-                            changePct: q.regularMarketChangePercent,
-                            prevClose: q.regularMarketPreviousClose
-                        };
-                    }
-                } catch (e2) {
-                    console.error('Fallback also failed', e2);
-                }
             }
             return null;
         }
