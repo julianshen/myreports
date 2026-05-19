@@ -593,8 +593,8 @@
         // Fetch stock data from Yahoo Finance via CORS proxy
         async function fetchStockData(symbol) {
             try {
-                // Use a CORS proxy to access Yahoo Finance
-                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                // Use corsproxy.io to access Yahoo Finance
+                const proxyUrl = 'https://corsproxy.io/?';
                 const yahooUrl = encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=2d`);
                 const response = await fetch(proxyUrl + yahooUrl);
                 if (!response.ok) throw new Error('HTTP ' + response.status);
