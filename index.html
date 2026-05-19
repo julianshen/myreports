@@ -652,8 +652,12 @@
             await loadAlerts();
         }
 
-        // Run on load
-        init();
+        // Run on DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
 
         // Refresh every 60 seconds
         setInterval(() => {
