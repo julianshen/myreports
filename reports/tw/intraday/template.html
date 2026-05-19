@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none';">
 
     <title>台股盤中 - {{DATE}}</title>
         <link rel="stylesheet" href="../../../assets/report.css">
+    <script src="../../../assets/lightweight-charts.js"></script>
     <style>
         :root {
             --accent: #f472b6;
@@ -53,6 +54,18 @@
             </div>
         </div>
 
+        <!-- 投資組合 -->
+        <div class="section">
+            <div class="section-title">💼 投資組合</div>
+            {{PORTFOLIO_CARDS}}
+        </div>
+
+        <!-- 走勢圖 -->
+        <div class="section">
+            <div class="section-title">📈 今日走勢</div>
+            <div id="portfolio-charts" class="charts-grid">{{CHART_DIVS}}</div>
+        </div>
+
         <!-- 警報區 -->
         <div class="section">
             <div class="section-title">🚨 智慧警報</div>
@@ -68,5 +81,53 @@
         <a href="latest.html" class="active"><span class="nav-icon">📈</span>盤中</a>
         <a href="../postmarket/latest.html"><span class="nav-icon">🌙</span>盤後</a>
     </div>
+
+    <script>
+    (function() {
+        var chartData = {{CHART_DATA}};
+        if (typeof LightweightCharts !== 'undefined' && chartData) {
+            Object.keys(chartData).forEach(function(symbol) {
+                var data = chartData[symbol];
+                var container = document.getElementById('chart-' + symbol);
+                var volContainer = document.getElementById('chart-vol-' + symbol);
+                if (!container) return;
+
+                var chart = LightweightCharts.createChart(container, {
+                    width: container.clientWidth || 300,
+                    height: 180,
+                    layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                    grid: { vertLines: { color: 'rgba(148,163,184,0.1)' }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
+                    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                    rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                    timeScale: { borderColor: 'rgba(148,163,184,0.2)', timeVisible: true },
+                    handleScroll: false,
+                    handleScale: false
+                });
+                var series = chart.addAreaSeries({
+                    topColor: 'rgba(244,114,182,0.3)',
+                    bottomColor: 'rgba(244,114,182,0.05)',
+                    lineColor: '#f472b6',
+                    lineWidth: 2
+                });
+                series.setData(data.prices || []);
+
+                if (volContainer) {
+                    var volChart = LightweightCharts.createChart(volContainer, {
+                        width: volContainer.clientWidth || 300,
+                        height: 50,
+                        layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                        grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(148,163,184,0.05)' } },
+                        rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                        timeScale: { visible: false },
+                        handleScroll: false,
+                        handleScale: false
+                    });
+                    var volSeries = volChart.addHistogramSeries({ color: 'rgba(244,114,182,0.5)' });
+                    volSeries.setData(data.volume || []);
+                }
+            });
+        }
+    })();
+    </script>
 </body>
 </html>
