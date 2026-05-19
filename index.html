@@ -139,6 +139,11 @@
             font-size: 0.75rem;
             font-weight: 600;
         }
+        .index-card .sparkline {
+            width: 100%;
+            height: 30px;
+            margin-top: 6px;
+        }
         .index-card .loading {
             color: var(--text-secondary);
             font-size: 0.8rem;
@@ -539,7 +544,12 @@
                                 <div class="symbol">${name}</div>
                                 <div class="price ${colorClass}">${values.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                                 <div class="change ${colorClass}">${sign}${values.change.toFixed(2)} (${sign}${values.changePct.toFixed(2)}%)</div>
+                                <svg class="sparkline" id="sparkline-${name}" viewBox="0 0 100 30" preserveAspectRatio="none"></svg>
                             `;
+                            // Draw sparkline if data available
+                            if (data.sparklines && data.sparklines[name]) {
+                                drawSparkline(name, data.sparklines[name], values.change >= 0);
+                            }
                         }
                     }
                 }
@@ -642,6 +652,49 @@
             } else {
                 alertsSection.innerHTML = '<div class="alert-empty">ℹ️ 無重大警報</div>';
             }
+        }
+
+        // Draw sparkline SVG chart
+        function drawSparkline(name, dataPoints, isUp) {
+            const svg = document.getElementById(`sparkline-${name}`);
+            if (!svg || dataPoints.length < 2) return;
+
+            const min = Math.min(...dataPoints);
+            const max = Math.max(...dataPoints);
+            const range = max - min || 1;
+            const width = 100;
+            const height = 30;
+            const padding = 2;
+
+            // Normalize points to SVG coordinates
+            const points = dataPoints.map((val, i) => {
+                const x = (i / (dataPoints.length - 1)) * width;
+                const y = height - padding - ((val - min) / range) * (height - 2 * padding);
+                return `${x},${y}`;
+            }).join(' ');
+
+            const color = isUp ? 'var(--up)' : 'var(--down)';
+
+            // Create polyline
+            const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+            polyline.setAttribute('points', points);
+            polyline.setAttribute('fill', 'none');
+            polyline.setAttribute('stroke', color);
+            polyline.setAttribute('stroke-width', '1.5');
+            polyline.setAttribute('stroke-linecap', 'round');
+            polyline.setAttribute('stroke-linejoin', 'round');
+
+            // Create area fill
+            const areaPoints = `0,${height} ${points} ${width},${height}`;
+            const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            polygon.setAttribute('points', areaPoints);
+            polygon.setAttribute('fill', color);
+            polygon.setAttribute('fill-opacity', '0.15');
+            polygon.setAttribute('stroke', 'none');
+
+            svg.innerHTML = '';
+            svg.appendChild(polygon);
+            svg.appendChild(polyline);
         }
 
         // Initialize
