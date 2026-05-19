@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none';">
 
     <title>美股盤前 - {{DATE}}</title>
-        <link rel="stylesheet" href="../../../assets/report.css">
+    <link rel="stylesheet" href="../../../assets/report.css">
+    <script src="../../../assets/lightweight-charts.js"></script>
     <style>
         :root {
             --accent: #60a5fa;
@@ -66,6 +67,12 @@
             </div>
         </div>
 
+        <!-- 走勢圖 -->
+        <div class="section">
+            <div class="section-title">📈 走勢圖</div>
+            <div id="portfolio-charts" class="charts-grid">{{CHART_DIVS}}</div>
+        </div>
+
         <!-- 價值機會 -->
         <div class="section">
             <div class="section-title">💎 價值機會 Top 5</div>
@@ -108,5 +115,54 @@
         <a href="../postmarket/latest.html"><span class="nav-icon">🌙</span>盤後</a>
         </div>
     </div>
+    <script>
+    (function() {
+        var chartData = {{CHART_DATA}};
+        if (typeof LightweightCharts !== 'undefined' && chartData) {
+            Object.keys(chartData).forEach(function(symbol) {
+                var container = document.getElementById('chart-' + symbol);
+                if (!container) return;
+                var data = chartData[symbol];
+                var chart = LightweightCharts.createChart(container, {
+                    width: container.clientWidth || 300,
+                    height: 200,
+                    layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                    grid: { vertLines: { color: 'rgba(148,163,184,0.1)' }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
+                    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                    rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                    timeScale: { borderColor: 'rgba(148,163,184,0.2)', timeVisible: false },
+                    handleScroll: false,
+                    handleScale: false
+                });
+                var series = chart.addAreaSeries({
+                    topColor: 'rgba(96,165,250,0.3)',
+                    bottomColor: 'rgba(96,165,250,0.05)',
+                    lineColor: '#60a5fa',
+                    lineWidth: 2
+                });
+                series.setData(data.prices || []);
+                if (data.rsi && data.rsi.length > 0) {
+                    var rsiContainer = document.getElementById('chart-rsi-' + symbol);
+                    if (rsiContainer) {
+                        var rsiChart = LightweightCharts.createChart(rsiContainer, {
+                            width: rsiContainer.clientWidth || 300,
+                            height: 80,
+                            layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                            grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
+                            rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                            timeScale: { visible: false },
+                            handleScroll: false,
+                            handleScale: false
+                        });
+                        var rsiSeries = rsiChart.addLineSeries({ color: '#a78bfa', lineWidth: 1.5 });
+                        rsiSeries.setData(data.rsi || []);
+                        rsiChart.addLineSeries({ color: 'rgba(251,113,133,0.5)', lineWidth: 1 }).setData(data.rsi.map(function(d) { return { time: d.time, value: 70 }; }));
+                        rsiChart.addLineSeries({ color: 'rgba(52,211,153,0.5)', lineWidth: 1 }).setData(data.rsi.map(function(d) { return { time: d.time, value: 30 }; }));
+                    }
+                }
+            });
+        }
+    })();
+    </script>
 </body>
 </html>
