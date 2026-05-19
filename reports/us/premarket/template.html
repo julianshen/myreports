@@ -118,47 +118,120 @@
     <script>
     (function() {
         var chartData = {{CHART_DATA}};
-        if (typeof LightweightCharts !== 'undefined' && chartData) {
-            Object.keys(chartData).forEach(function(symbol) {
-                var container = document.getElementById('chart-' + symbol);
-                if (!container) return;
-                var data = chartData[symbol];
-                var chart = LightweightCharts.createChart(container, {
-                    width: container.clientWidth || 300,
-                    height: 200,
+        var chartInstances = {};
+        
+        function filterDataByRange(data, range) {
+            var days = range === '1M' ? 22 : range === '3M' ? 66 : 132;
+            return data.slice(-days);
+        }
+        
+        function createCharts(symbol, data, range) {
+            var container = document.getElementById('chart-' + symbol);
+            var volContainer = document.getElementById('chart-vol-' + symbol);
+            var rsiContainer = document.getElementById('chart-rsi-' + symbol);
+            if (!container) return;
+            
+            var prices = filterDataByRange(data.prices || [], range);
+            var volumes = filterDataByRange(data.volume || [], range);
+            var ma5 = filterDataByRange(data.ma5 || [], range);
+            var ma20 = filterDataByRange(data.ma20 || [], range);
+            var rsi = filterDataByRange(data.rsi || [], range);
+            
+            // Main price chart
+            var chart = LightweightCharts.createChart(container, {
+                width: container.clientWidth || 300,
+                height: 200,
+                layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                grid: { vertLines: { color: 'rgba(148,163,184,0.1)' }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
+                crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                timeScale: { borderColor: 'rgba(148,163,184,0.2)', timeVisible: false },
+                handleScroll: false,
+                handleScale: false
+            });
+            var series = chart.addAreaSeries({
+                topColor: 'rgba(96,165,250,0.3)',
+                bottomColor: 'rgba(96,165,250,0.05)',
+                lineColor: '#60a5fa',
+                lineWidth: 2
+            });
+            series.setData(prices);
+            
+            // MA5
+            if (ma5.length > 0) {
+                var ma5Series = chart.addLineSeries({ color: '#fbbf24', lineWidth: 1.5, title: 'MA5' });
+                ma5Series.setData(ma5);
+            }
+            // MA20
+            if (ma20.length > 0) {
+                var ma20Series = chart.addLineSeries({ color: '#f472b6', lineWidth: 1.5, title: 'MA20' });
+                ma20Series.setData(ma20);
+            }
+            
+            // Volume chart
+            var volChart = null;
+            if (volContainer) {
+                volChart = LightweightCharts.createChart(volContainer, {
+                    width: volContainer.clientWidth || 300,
+                    height: 60,
                     layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
-                    grid: { vertLines: { color: 'rgba(148,163,184,0.1)' }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
-                    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                    grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(148,163,184,0.05)' } },
                     rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
-                    timeScale: { borderColor: 'rgba(148,163,184,0.2)', timeVisible: false },
+                    timeScale: { visible: false },
                     handleScroll: false,
                     handleScale: false
                 });
-                var series = chart.addAreaSeries({
-                    topColor: 'rgba(96,165,250,0.3)',
-                    bottomColor: 'rgba(96,165,250,0.05)',
-                    lineColor: '#60a5fa',
-                    lineWidth: 2
+                var volSeries = volChart.addHistogramSeries({ color: 'rgba(96,165,250,0.5)' });
+                volSeries.setData(volumes);
+            }
+            
+            // RSI chart
+            var rsiChart = null;
+            if (rsiContainer) {
+                rsiChart = LightweightCharts.createChart(rsiContainer, {
+                    width: rsiContainer.clientWidth || 300,
+                    height: 80,
+                    layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                    grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
+                    rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                    timeScale: { visible: false },
+                    handleScroll: false,
+                    handleScale: false
                 });
-                series.setData(data.prices || []);
-                if (data.rsi && data.rsi.length > 0) {
-                    var rsiContainer = document.getElementById('chart-rsi-' + symbol);
-                    if (rsiContainer) {
-                        var rsiChart = LightweightCharts.createChart(rsiContainer, {
-                            width: rsiContainer.clientWidth || 300,
-                            height: 80,
-                            layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
-                            grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
-                            rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
-                            timeScale: { visible: false },
-                            handleScroll: false,
-                            handleScale: false
+                var rsiSeries = rsiChart.addLineSeries({ color: '#a78bfa', lineWidth: 1.5 });
+                rsiSeries.setData(rsi);
+                rsiChart.addLineSeries({ color: 'rgba(251,113,133,0.5)', lineWidth: 1 }).setData(rsi.map(function(d) { return { time: d.time, value: 70 }; }));
+                rsiChart.addLineSeries({ color: 'rgba(52,211,153,0.5)', lineWidth: 1 }).setData(rsi.map(function(d) { return { time: d.time, value: 30 }; }));
+            }
+            
+            return { price: chart, volume: volChart, rsi: rsiChart };
+        }
+        
+        function destroyCharts(symbol) {
+            if (chartInstances[symbol]) {
+                if (chartInstances[symbol].price) chartInstances[symbol].price.remove();
+                if (chartInstances[symbol].volume) chartInstances[symbol].volume.remove();
+                if (chartInstances[symbol].rsi) chartInstances[symbol].rsi.remove();
+                delete chartInstances[symbol];
+            }
+        }
+        
+        if (typeof LightweightCharts !== 'undefined' && chartData) {
+            Object.keys(chartData).forEach(function(symbol) {
+                var data = chartData[symbol];
+                chartInstances[symbol] = createCharts(symbol, data, '1M');
+                
+                // Range button handlers
+                var card = document.querySelector('.chart-card[data-symbol="' + symbol + '"]');
+                if (card) {
+                    card.querySelectorAll('.range-btn').forEach(function(btn) {
+                        btn.addEventListener('click', function() {
+                            card.querySelectorAll('.range-btn').forEach(function(b) { b.classList.remove('active'); });
+                            btn.classList.add('active');
+                            destroyCharts(symbol);
+                            chartInstances[symbol] = createCharts(symbol, data, btn.dataset.range);
                         });
-                        var rsiSeries = rsiChart.addLineSeries({ color: '#a78bfa', lineWidth: 1.5 });
-                        rsiSeries.setData(data.rsi || []);
-                        rsiChart.addLineSeries({ color: 'rgba(251,113,133,0.5)', lineWidth: 1 }).setData(data.rsi.map(function(d) { return { time: d.time, value: 70 }; }));
-                        rsiChart.addLineSeries({ color: 'rgba(52,211,153,0.5)', lineWidth: 1 }).setData(data.rsi.map(function(d) { return { time: d.time, value: 30 }; }));
-                    }
+                    });
                 }
             });
         }

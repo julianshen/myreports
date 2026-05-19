@@ -214,16 +214,44 @@
             padding: 12px;
             border: 1px solid var(--border);
         }
+        .chart-card .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
         .chart-card .chart-title {
             font-size: 0.85rem;
             font-weight: 600;
             color: var(--text);
-            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
         .chart-card .chart-title .symbol { color: var(--accent); }
-        .chart-card .chart-title .rsi-label { color: var(--accent2); font-size: 0.75rem; margin-left: auto; }
+        .chart-card .time-range {
+            display: flex;
+            gap: 4px;
+        }
+        .chart-card .range-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .chart-card .range-btn.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+        .chart-card .range-btn:hover:not(.active) {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
         .chart-container { width: 100%; height: 200px; }
-        .chart-container-rsi { width: 100%; height: 80px; margin-top: 4px; }
+        .chart-container-vol { width: 100%; height: 60px; margin-top: 2px; }
+        .chart-container-rsi { width: 100%; height: 80px; margin-top: 2px; }
