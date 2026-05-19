@@ -1,0 +1,22 @@
+{
+  "updated": "2026-05-19T12:00:00Z",
+  "indices": {
+    "ES": {"price": 5895.25, "change": 12.5, "changePct": 0.21},
+    "NQ": {"price": 20450.75, "change": 85.25, "changePct": 0.42},
+    "YM": {"price": 42780.0, "change": 45.0, "changePct": 0.11},
+    "RTY": {"price": 2185.5, "change": -8.25, "changePct": -0.38}
+  },
+  "portfolio": {
+    "us": {
+      "total_change": 0,
+      "total_change_pct": 0,
+      "holdings": []
+    },
+    "tw": {
+      "total_change": 0,
+      "total_change_pct": 0,
+      "holdings": []
+    }
+  },
+  "alerts": []
+}

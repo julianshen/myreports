@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://query1.finance.yahoo.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
 
     <title>Julian's Market Dashboard</title>
     <style>
@@ -36,47 +36,18 @@
             padding: clamp(12px, 3vw, 20px); 
         }
         
-        /* Responsive font sizes */
-        @media (max-width: 360px) {
-            html { font-size: 14px; }
-        }
-        @media (min-width: 361px) and (max-width: 430px) {
-            html { font-size: 15px; }
-        }
-        @media (min-width: 431px) {
-            html { font-size: 16px; }
-        }
+        @media (max-width: 360px) { html { font-size: 14px; } }
+        @media (min-width: 361px) and (max-width: 430px) { html { font-size: 15px; } }
+        @media (min-width: 431px) { html { font-size: 16px; } }
         
-        /* Tablet and desktop */
         @media (min-width: 768px) {
-            .container { 
-                max-width: 640px; 
-                padding: 24px;
-            }
-            .nav-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 16px;
-            }
-            .nav-card {
-                padding: 20px 12px;
-            }
-            .link-list {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-                background: transparent;
-            }
-            .link-item {
-                background: var(--card);
-                border-radius: 16px;
-                border-bottom: none;
-            }
-            .index-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .portfolio-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .container { max-width: 640px; padding: 24px; }
+            .nav-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+            .nav-card { padding: 20px 12px; }
+            .link-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: transparent; }
+            .link-item { background: var(--card); border-radius: 16px; border-bottom: none; }
+            .index-grid { grid-template-columns: repeat(4, 1fr); }
+            .portfolio-grid { grid-template-columns: 1fr 1fr; }
         }
         header {
             text-align: center;
@@ -121,7 +92,7 @@
             50% { opacity: 0.5; }
         }
 
-        /* Index Futures */
+        /* Section Title */
         .section-title {
             font-size: 0.75rem;
             text-transform: uppercase;
@@ -133,6 +104,8 @@
             align-items: center;
             gap: 6px;
         }
+
+        /* Index Futures */
         .index-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -388,56 +361,7 @@
                     </div>
                 </div>
                 <div id="usHoldings">
-                    <div class="holding-row">
-                        <div class="holding-info">
-                            <div class="holding-symbol">AAOX</div>
-                            <div class="holding-shares">-- 股</div>
-                        </div>
-                        <div class="holding-value">
-                            <div class="holding-price">--</div>
-                            <div class="holding-change">--</div>
-                        </div>
-                    </div>
-                    <div class="holding-row">
-                        <div class="holding-info">
-                            <div class="holding-symbol">MU</div>
-                            <div class="holding-shares">-- 股</div>
-                        </div>
-                        <div class="holding-value">
-                            <div class="holding-price">--</div>
-                            <div class="holding-change">--</div>
-                        </div>
-                    </div>
-                    <div class="holding-row">
-                        <div class="holding-info">
-                            <div class="holding-symbol">NOK</div>
-                            <div class="holding-shares">-- 股</div>
-                        </div>
-                        <div class="holding-value">
-                            <div class="holding-price">--</div>
-                            <div class="holding-change">--</div>
-                        </div>
-                    </div>
-                    <div class="holding-row">
-                        <div class="holding-info">
-                            <div class="holding-symbol">NVDA</div>
-                            <div class="holding-shares">-- 股</div>
-                        </div>
-                        <div class="holding-value">
-                            <div class="holding-price">--</div>
-                            <div class="holding-change">--</div>
-                        </div>
-                    </div>
-                    <div class="holding-row">
-                        <div class="holding-info">
-                            <div class="holding-symbol">STM</div>
-                            <div class="holding-shares">-- 股</div>
-                        </div>
-                        <div class="holding-value">
-                            <div class="holding-price">--</div>
-                            <div class="holding-change">--</div>
-                        </div>
-                    </div>
+                    <div class="alert-empty">載入中...</div>
                 </div>
             </div>
             <!-- TW Portfolio -->
@@ -450,36 +374,7 @@
                     </div>
                 </div>
                 <div id="twHoldings">
-                    <div class="holding-row">
-                        <div class="holding-info">
-                            <div class="holding-symbol">2330 台積電</div>
-                            <div class="holding-shares">-- 股</div>
-                        </div>
-                        <div class="holding-value">
-                            <div class="holding-price">--</div>
-                            <div class="holding-change">--</div>
-                        </div>
-                    </div>
-                    <div class="holding-row">
-                        <div class="holding-info">
-                            <div class="holding-symbol">2408 南亞科</div>
-                            <div class="holding-shares">-- 股</div>
-                        </div>
-                        <div class="holding-value">
-                            <div class="holding-price">--</div>
-                            <div class="holding-change">--</div>
-                        </div>
-                    </div>
-                    <div class="holding-row">
-                        <div class="holding-info">
-                            <div class="holding-symbol">2337 旺宏</div>
-                            <div class="holding-shares">-- 股</div>
-                        </div>
-                        <div class="holding-value">
-                            <div class="holding-price">--</div>
-                            <div class="holding-change">--</div>
-                        </div>
-                    </div>
+                    <div class="alert-empty">載入中...</div>
                 </div>
             </div>
         </div>
@@ -566,155 +461,15 @@
     </div>
 
     <script>
-        // Portfolio configuration - shares held
-        const PORTFOLIO = {
-            us: {
-                AAOX: { shares: 0 },
-                MU: { shares: 0 },
-                NOK: { shares: 0 },
-                NVDA: { shares: 0 },
-                STM: { shares: 0 }
-            },
-            tw: {
-                '2330.TW': { shares: 0, name: '台積電' },
-                '2408.TW': { shares: 0, name: '南亞科' },
-                '2337.TW': { shares: 0, name: '旺宏' }
-            }
-        };
-
-        // Index futures symbols
-        const INDEX_SYMBOLS = {
-            'ES': 'ES=F',      // S&P 500 E-mini
-            'NQ': 'NQ=F',      // Nasdaq 100 E-mini
-            'YM': 'YM=F',      // Dow E-mini
-            'RTY': 'RTY=F'     // Russell 2000
-        };
-
-        // Fetch stock data from Yahoo Finance via CORS proxy
-        async function fetchStockData(symbol) {
+        // Fetch market data from local JSON file
+        async function fetchMarketData() {
             try {
-                // Use corsproxy.io to access Yahoo Finance
-                const proxyUrl = 'https://corsproxy.io/?';
-                const yahooUrl = encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=2d`);
-                const response = await fetch(proxyUrl + yahooUrl);
+                const response = await fetch('assets/market_data.json?v=' + Date.now());
                 if (!response.ok) throw new Error('HTTP ' + response.status);
-                const data = await response.json();
-                if (data.chart && data.chart.result && data.chart.result[0]) {
-                    const result = data.chart.result[0];
-                    const meta = result.meta;
-                    const quote = result.indicators.quote[0];
-                    const closes = quote.close.filter(x => x !== null);
-                    const lastPrice = meta.regularMarketPrice || meta.currentPrice || closes[closes.length - 1];
-                    const prevClose = meta.previousClose || meta.chartPreviousClose || meta.regularMarketPreviousClose;
-                    if (lastPrice && prevClose) {
-                        const change = lastPrice - prevClose;
-                        const changePct = (change / prevClose) * 100;
-                        return { price: lastPrice, change: change, changePct: changePct, prevClose: prevClose };
-                    }
-                }
+                return await response.json();
             } catch (e) {
-                console.error('Error fetching', symbol, e);
-            }
-            return null;
-        }
-
-        // Update index futures
-        async function updateIndexFutures() {
-            for (const [name, symbol] of Object.entries(INDEX_SYMBOLS)) {
-                const data = await fetchStockData(symbol);
-                const card = document.querySelector(`.index-card:nth-child(${Object.keys(INDEX_SYMBOLS).indexOf(name) + 1})`);
-                if (data && card) {
-                    const colorClass = data.change >= 0 ? 'up' : 'down';
-                    const sign = data.change >= 0 ? '+' : '';
-                    card.innerHTML = `
-                        <div class="symbol">${name}</div>
-                        <div class="price ${colorClass}">${data.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                        <div class="change ${colorClass}">${sign}${data.change.toFixed(2)} (${sign}${data.changePct.toFixed(2)}%)</div>
-                    `;
-                } else if (card) {
-                    card.innerHTML = `
-                        <div class="symbol">${name}</div>
-                        <div class="loading">無法載入</div>
-                    `;
-                }
-            }
-        }
-
-        // Update portfolio
-        async function updatePortfolio() {
-            let usTotalChange = 0;
-            let twTotalChange = 0;
-
-            // US holdings
-            const usContainer = document.getElementById('usHoldings');
-            usContainer.innerHTML = '';
-            for (const [symbol, config] of Object.entries(PORTFOLIO.us)) {
-                if (config.shares <= 0) continue;
-                const data = await fetchStockData(symbol);
-                if (data) {
-                    const changeValue = data.change * config.shares;
-                    usTotalChange += changeValue;
-                    const colorClass = data.change >= 0 ? 'up' : 'down';
-                    const sign = data.change >= 0 ? '+' : '';
-                    usContainer.innerHTML += `
-                        <div class="holding-row">
-                            <div class="holding-info">
-                                <div class="holding-symbol">${symbol}</div>
-                                <div class="holding-shares">${config.shares} 股</div>
-                            </div>
-                            <div class="holding-value">
-                                <div class="holding-price">$${data.price.toFixed(2)}</div>
-                                <div class="holding-change ${colorClass}">${sign}${data.changePct.toFixed(2)}%</div>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-            if (usContainer.innerHTML === '') {
-                usContainer.innerHTML = '<div class="alert-empty">暫無持倉</div>';
-            }
-
-            // TW holdings
-            const twContainer = document.getElementById('twHoldings');
-            twContainer.innerHTML = '';
-            for (const [symbol, config] of Object.entries(PORTFOLIO.tw)) {
-                if (config.shares <= 0) continue;
-                const data = await fetchStockData(symbol);
-                if (data) {
-                    const changeValue = data.change * config.shares;
-                    twTotalChange += changeValue;
-                    const colorClass = data.change >= 0 ? 'up' : 'down';
-                    const sign = data.change >= 0 ? '+' : '';
-                    twContainer.innerHTML += `
-                        <div class="holding-row">
-                            <div class="holding-info">
-                                <div class="holding-symbol">${symbol.replace('.TW', '')} ${config.name}</div>
-                                <div class="holding-shares">${config.shares} 股</div>
-                            </div>
-                            <div class="holding-value">
-                                <div class="holding-price">$${data.price.toFixed(2)}</div>
-                                <div class="holding-change ${colorClass}">${sign}${data.changePct.toFixed(2)}%</div>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-            if (twContainer.innerHTML === '') {
-                twContainer.innerHTML = '<div class="alert-empty">暫無持倉</div>';
-            }
-
-            // Update totals
-            const usTotalEl = document.getElementById('usTotal');
-            const twTotalEl = document.getElementById('twTotal');
-            if (usTotalEl) {
-                const sign = usTotalChange >= 0 ? '+' : '';
-                usTotalEl.className = 'pf-total ' + (usTotalChange >= 0 ? 'up' : 'down');
-                usTotalEl.textContent = sign + '$' + usTotalChange.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-            }
-            if (twTotalEl) {
-                const sign = twTotalChange >= 0 ? '+' : '';
-                twTotalEl.className = 'pf-total ' + (twTotalChange >= 0 ? 'up' : 'down');
-                twTotalEl.textContent = sign + '$' + twTotalChange.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                console.error('Error fetching market data:', e);
+                return null;
             }
         }
 
@@ -769,34 +524,123 @@
             }
         }
 
-        // Load alerts from latest intraday report
-        async function loadAlerts() {
-            const alertsSection = document.getElementById('alertsSection');
-            try {
-                // Try to fetch latest US intraday report and extract alerts
-                const response = await fetch('reports/us/intraday/latest.html');
-                if (response.ok) {
-                    const html = await response.text();
-                    // Extract alert content from the report
-                    const alertMatch = html.match(/<div class="alert-box[^"]*">[\s\S]*?<\/div>/g);
-                    if (alertMatch && alertMatch.length > 0) {
-                        alertsSection.innerHTML = '';
-                        alertMatch.slice(0, 3).forEach(alertHtml => {
-                            // Convert alert-box to alert-card
-                            const cardHtml = alertHtml
-                                .replace('alert-box', 'alert-card danger')
-                                .replace('alert-title', 'alert-time')
-                                .replace('alert-text', 'alert-text');
-                            alertsSection.innerHTML += cardHtml;
-                        });
-                    } else {
-                        alertsSection.innerHTML = '<div class="alert-empty">今日暫無警報</div>';
+        // Update index futures from local data
+        async function updateIndexFutures() {
+            const data = await fetchMarketData();
+            if (data && data.indices) {
+                for (const [name, values] of Object.entries(data.indices)) {
+                    const cards = document.querySelectorAll('.index-card');
+                    for (const card of cards) {
+                        const symbol = card.querySelector('.symbol')?.textContent;
+                        if (symbol === name) {
+                            const colorClass = values.change >= 0 ? 'up' : 'down';
+                            const sign = values.change >= 0 ? '+' : '';
+                            card.innerHTML = `
+                                <div class="symbol">${name}</div>
+                                <div class="price ${colorClass}">${values.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                                <div class="change ${colorClass}">${sign}${values.change.toFixed(2)} (${sign}${values.changePct.toFixed(2)}%)</div>
+                            `;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Update portfolio from local data
+        async function updatePortfolio() {
+            const data = await fetchMarketData();
+            if (data && data.portfolio) {
+                // US Portfolio
+                const usTotalEl = document.getElementById('usTotal');
+                const usContainer = document.getElementById('usHoldings');
+                if (data.portfolio.us.holdings.length === 0) {
+                    if (usContainer) usContainer.innerHTML = '<div class="alert-empty">暫無持倉</div>';
+                    if (usTotalEl) {
+                        usTotalEl.className = 'pf-total';
+                        usTotalEl.textContent = '+$0.00';
                     }
                 } else {
-                    alertsSection.innerHTML = '<div class="alert-empty">今日暫無警報</div>';
+                    if (usContainer) {
+                        usContainer.innerHTML = '';
+                        data.portfolio.us.holdings.forEach(h => {
+                            const colorClass = h.change_pct >= 0 ? 'up' : 'down';
+                            const sign = h.change_pct >= 0 ? '+' : '';
+                            usContainer.innerHTML += `
+                                <div class="holding-row">
+                                    <div class="holding-info">
+                                        <div class="holding-symbol">${h.symbol}</div>
+                                        <div class="holding-shares">${h.shares} 股</div>
+                                    </div>
+                                    <div class="holding-value">
+                                        <div class="holding-price">$${h.price.toFixed(2)}</div>
+                                        <div class="holding-change ${colorClass}">${sign}${h.change_pct.toFixed(2)}%</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                    if (usTotalEl) {
+                        const sign = data.portfolio.us.total_change >= 0 ? '+' : '';
+                        usTotalEl.className = 'pf-total ' + (data.portfolio.us.total_change >= 0 ? 'up' : 'down');
+                        usTotalEl.textContent = sign + '$' + data.portfolio.us.total_change.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    }
                 }
-            } catch (e) {
-                alertsSection.innerHTML = '<div class="alert-empty">無法載入警報</div>';
+
+                // TW Portfolio
+                const twTotalEl = document.getElementById('twTotal');
+                const twContainer = document.getElementById('twHoldings');
+                if (data.portfolio.tw.holdings.length === 0) {
+                    if (twContainer) twContainer.innerHTML = '<div class="alert-empty">暫無持倉</div>';
+                    if (twTotalEl) {
+                        twTotalEl.className = 'pf-total';
+                        twTotalEl.textContent = '+$0.00';
+                    }
+                } else {
+                    if (twContainer) {
+                        twContainer.innerHTML = '';
+                        data.portfolio.tw.holdings.forEach(h => {
+                            const colorClass = h.change_pct >= 0 ? 'up' : 'down';
+                            const sign = h.change_pct >= 0 ? '+' : '';
+                            twContainer.innerHTML += `
+                                <div class="holding-row">
+                                    <div class="holding-info">
+                                        <div class="holding-symbol">${h.symbol} ${h.name || ''}</div>
+                                        <div class="holding-shares">${h.shares} 股</div>
+                                    </div>
+                                    <div class="holding-value">
+                                        <div class="holding-price">$${h.price.toFixed(2)}</div>
+                                        <div class="holding-change ${colorClass}">${sign}${h.change_pct.toFixed(2)}%</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                    if (twTotalEl) {
+                        const sign = data.portfolio.tw.total_change >= 0 ? '+' : '';
+                        twTotalEl.className = 'pf-total ' + (data.portfolio.tw.total_change >= 0 ? 'up' : 'down');
+                        twTotalEl.textContent = sign + '$' + data.portfolio.tw.total_change.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    }
+                }
+            }
+        }
+
+        // Load alerts from local data
+        async function loadAlerts() {
+            const data = await fetchMarketData();
+            const alertsSection = document.getElementById('alertsSection');
+            if (data && data.alerts && data.alerts.length > 0) {
+                alertsSection.innerHTML = '';
+                data.alerts.slice(0, 3).forEach(alert => {
+                    const severityClass = alert.severity === 'danger' ? 'danger' : (alert.severity === 'up' ? 'up' : '');
+                    alertsSection.innerHTML += `
+                        <div class="alert-card ${severityClass}">
+                            <div class="alert-time">${alert.time}</div>
+                            <div class="alert-text">${alert.message}</div>
+                        </div>
+                    `;
+                });
+            } else {
+                alertsSection.innerHTML = '<div class="alert-empty">ℹ️ 無重大警報</div>';
             }
         }
 
