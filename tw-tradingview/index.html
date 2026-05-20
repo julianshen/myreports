@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>TW TradingView — 台股即時看盤</title>
+    <link rel="stylesheet" href="../assets/report.css">
+    <script src="../assets/lightweight-charts.js"></script>
+    <style>
+        :root {
+            --accent: #f472b6;
+            --accent2: #fb7185;
+            --bg-panel: #0f1525;
+            --bg-chart: #0a0e1a;
+            --grid: #1a2332;
+            --border-light: #2a3444;
+            --text-dim: #64748b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ── Layout: Desktop = side-by-side, Mobile = stacked ── */
+        .app-layout {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        @media (min-width: 1024px) {
+            .app-layout { flex-direction: row; }
+            .sidebar { width: 320px; min-width: 320px; border-right: 1px solid var(--border); }
+            .main-area { flex: 1; display: flex; flex-direction: column; }
+            .chart-zone { flex: 1; min-height: 500px; }
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .sidebar-header .logo {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+        .sidebar-header h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .sidebar-header .sub {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        /* Watchlist */
+        .watchlist-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .watchlist-title .add-btn {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            width: 24px; height: 24px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .watchlist {
+            list-style: none;
+        }
+        .watchlist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+            margin-bottom: 4px;
+        }
+        .watchlist-item:hover { background: var(--card-hover); }
+        .watchlist-item.active {
+            background: rgba(244,114,182,0.1);
+            border-color: rgba(244,114,182,0.3);
+        }
+        .watchlist-item .wl-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: var(--card);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .watchlist-item .wl-info { flex: 1; min-width: 0; }
+        .watchlist-item .wl-symbol {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .watchlist-item .wl-name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .watchlist-item .wl-price {
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .watchlist-item .wl-price-val {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .watchlist-item .wl-change {
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Index mini cards */
+        .index-mini-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .index-mini {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid var(--border);
+        }
+        .index-mini .name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .index-mini .price {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .index-mini .change {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* ── Main Area ── */
+        .main-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+        }
+        .top-bar .symbol-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .top-bar .symbol-badge {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+        .top-bar .symbol-text .sym {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .top-bar .symbol-text .name {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .top-bar .price-live {
+            text-align: right;
+        }
+        .top-bar .price-live .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .top-bar .price-live .change {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .top-bar .market-status {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(74,222,128,0.1);
+            color: var(--up);
+            white-space: nowrap;
+        }
+        .top-bar .market-status.closed {
+            background: rgba(248,113,113,0.1);
+            color: var(--down);
+        }
+
+        /* Chart toolbar */
+        .chart-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-chart);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .chart-toolbar .tb-group {
+            display: flex;
+            gap: 4px;
+        }
+        .chart-toolbar .tb-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .chart-toolbar .tb-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .chart-toolbar .tb-btn.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+        .chart-toolbar .tb-sep {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+            margin: 0 4px;
+        }
+        .chart-toolbar .tb-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--card);
+            white-space: nowrap;
+        }
+        .chart-toolbar .tb-indicator.on {
+            background: rgba(244,114,182,0.15);
+            border-color: rgba(244,114,182,0.4);
+            color: var(--accent);
+        }
+
+        /* Chart zone */
+        .chart-zone {
+            flex: 1;
+            background: var(--bg-chart);
+            position: relative;
+            min-height: 350px;
+        }
+        #main-chart {
+            width: 100%;
+            height: 100%;
+            min-height: 350px;
+        }
+
+        /* Bottom info panel */
+        .info-panel {
+            background: var(--bg-panel);
+            border-top: 1px solid var(--border);
+            padding: 16px;
+        }
+        .info-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            overflow-x: auto;
+        }
+        .info-tab {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s;
+        }
+        .info-tab:hover { color: var(--text); }
+        .info-tab.active {
+            background: var(--accent);
+            color: var(--bg);
+        }
+        .info-content {
+            display: none;
+        }
+        .info-content.active { display: block; }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        @media (min-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(6, 1fr); }
+        }
+        .stat-box {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .stat-box .label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .stat-box .value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Order panel mock */
+        .order-mock {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .order-btn {
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+        .order-btn.buy {
+            background: rgba(74,222,128,0.15);
+            color: var(--up);
+            border: 1px solid rgba(74,222,128,0.3);
+        }
+        .order-btn.sell {
+            background: rgba(248,113,113,0.15);
+            color: var(--down);
+            border: 1px solid rgba(248,113,113,0.3);
+        }
+
+        /* News list */
+        .news-list { list-style: none; }
+        .news-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .news-list li:last-child { border-bottom: none; }
+        .news-list .news-time {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* Mobile bottom nav */
+        .mobile-nav {
+            display: flex;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--bg-panel);
+            border-top: 1px solid var(--border);
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+        @media (min-width: 1024px) {
+            .mobile-nav { display: none; }
+        }
+        .mobile-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.65rem;
+            text-align: center;
+            padding: 4px 12px;
+        }
+        .mobile-nav a.active { color: var(--accent); }
+        .mobile-nav .nav-icon { font-size: 1.3rem; display: block; margin-bottom: 2px; }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+    </style>
+</head>
+<body>
+<div class="app-layout">
+    <!-- Sidebar: Watchlist + Indices -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">📈</div>
+            <div>
+                <h1>TW TradingView</h1>
+                <div class="sub">台股即時看盤</div>
+            </div>
+        </div>
+
+        <!-- Market Indices -->
+        <div class="index-mini-grid">
+            <div class="index-mini">
+                <div class="name">加權指數</div>
+                <div class="price">40,204.16</div>
+                <div class="change up">+0.07%</div>
+            </div>
+            <div class="index-mini">
+                <div class="name">櫃買指數</div>
+                <div class="price">269.45</div>
+                <div class="change down">-0.15%</div>
+            </div>
+        </div>
+
+        <!-- Watchlist -->
+        <div class="watchlist-title">
+            自選股
+            <button class="add-btn">+</button>
+        </div>
+        <ul class="watchlist" id="watchlist">
+            <li class="watchlist-item active" data-symbol="2330.TW">
+                <div class="wl-icon">🟠</div>
+                <div class="wl-info">
+                    <div class="wl-symbol">2330</div>
+                    <div class="wl-name">台積電</div>
+                </div>
+                <div class="wl-price">
+                    <div class="wl-price-val">2,205</div>
+                    <div class="wl-change up">+1.2%</div>
+                </div>
+            </li>
+            <li class="watchlist-item" data-symbol="2408.TW">
+                <div class="wl-icon">🔵</div>
+                <div class="wl-info">
+                    <div class="wl-symbol">2408</div>
+                    <div class="wl-name">南亞科</div>
+                </div>
+                <div class="wl-price">
+                    <div class="wl-price-val">274.50</div>
+                    <div class="wl-change down">-0.8%</div>
+                </div>
+            </li>
+            <li class="watchlist-item" data-symbol="2337.TW">
+                <div class="wl-icon">🟢</div>
+                <div class="wl-info">
+                    <div class="wl-symbol">2337</div>
+                    <div class="wl-name">旺宏</div>
+                </div>
+                <div class="wl-price">
+                    <div class="wl-price-val">144.00</div>
+                    <div class="wl-change up">+0.5%</div>
+                </div>
+            </li>
+            <li class="watchlist-item" data-symbol="2317.TW">
+                <div class="wl-icon">🟣</div>
+                <div class="wl-info">
+                    <div class="wl-symbol">2317</div>
+                    <div class="wl-name">鴻海</div>
+                </div>
+                <div class="wl-price">
+                    <div class="wl-price-val">185.50</div>
+                    <div class="wl-change up">+0.3%</div>
+                </div>
+            </li>
+            <li class="watchlist-item" data-symbol="2454.TW">
+                <div class="wl-icon">🔴</div>
+                <div class="wl-info">
+                    <div class="wl-symbol">2454</div>
+                    <div class="wl-name">聯發科</div>
+                </div>
+                <div class="wl-price">
+                    <div class="wl-price-val">1,280</div>
+                    <div class="wl-change down">-1.1%</div>
+                </div>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Area -->
+    <div class="main-area">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="symbol-info">
+                <div class="symbol-badge">🟠</div>
+                <div class="symbol-text">
+                    <div class="sym" id="current-symbol">2330.TW</div>
+                    <div class="name" id="current-name">台積電 — 半導體</div>
+                </div>
+            </div>
+            <div class="price-live">
+                <div class="price up" id="current-price">2,205.00</div>
+                <div class="change up" id="current-change">+26.00 (+1.20%)</div>
+            </div>
+            <div class="market-status" id="market-status">🔴 盤中交易中</div>
+        </div>
+
+        <!-- Chart Toolbar -->
+        <div class="chart-toolbar">
+            <div class="tb-group">
+                <button class="tb-btn active" data-interval="1">1分</button>
+                <button class="tb-btn" data-interval="5">5分</button>
+                <button class="tb-btn" data-interval="15">15分</button>
+                <button class="tb-btn" data-interval="30">30分</button>
+                <button class="tb-btn" data-interval="60">1時</button>
+                <button class="tb-btn" data-interval="D">日</button>
+                <button class="tb-btn" data-interval="W">週</button>
+            </div>
+            <div class="tb-sep"></div>
+            <div class="tb-group">
+                <button class="tb-indicator on" data-ind="ma">MA</button>
+                <button class="tb-indicator" data-ind="rsi">RSI</button>
+                <button class="tb-indicator" data-ind="macd">MACD</button>
+                <button class="tb-indicator" data-ind="bb">布林</button>
+                <button class="tb-indicator" data-ind="vol">成交量</button>
+            </div>
+        </div>
+
+        <!-- Chart Zone -->
+        <div class="chart-zone">
+            <div id="main-chart"></div>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div class="info-tabs">
+                <button class="info-tab active" data-tab="stats">統計</button>
+                <button class="info-tab" data-tab="order">下單</button>
+                <button class="info-tab" data-tab="news">新聞</button>
+                <button class="info-tab" data-tab="financial">財報</button>
+            </div>
+
+            <!-- Stats Tab -->
+            <div class="info-content active" data-tab="stats">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="label">開盤</div>
+                        <div class="value">2,180</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">最高</div>
+                        <div class="value up">2,210</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">最低</div>
+                        <div class="value down">2,175</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">昨收</div>
+                        <div class="value">2,179</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">成交量</div>
+                        <div class="value">12,450</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">市值(億)</div>
+                        <div class="value">571,200</div>
+                    </div>
+                </div>
+                <div class="stats-grid" style="margin-top: 10px;">
+                    <div class="stat-box">
+                        <div class="label">本益比</div>
+                        <div class="value">24.5</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">股價淨值比</div>
+                        <div class="value">6.8</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">殖利率</div>
+                        <div class="value">1.82%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">52週高</div>
+                        <div class="value">2,380</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">52週低</div>
+                        <div class="value">1,850</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">RSI(14)</div>
+                        <div class="value">58.3</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Tab -->
+            <div class="info-content" data-tab="order">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="label">買一</div>
+                        <div class="value up">2,204</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">賣一</div>
+                        <div class="value down">2,205</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">買量</div>
+                        <div class="value">245</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">賣量</div>
+                        <div class="value">180</div>
+                    </div>
+                </div>
+                <div class="order-mock">
+                    <button class="order-btn buy">🟢 買進</button>
+                    <button class="order-btn sell">🔴 賣出</button>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 10px; text-align: center;">
+                    ⚠️ 此為模擬介面，不具實際下單功能
+                </p>
+            </div>
+
+            <!-- News Tab -->
+            <div class="info-content" data-tab="news">
+                <ul class="news-list">
+                    <li>
+                        <div>台積電 2nm 製程獲蘋果、輝達大單，產能滿載至 2027 年</div>
+                        <div class="news-time">10:32 · 鉅亨網</div>
+                    </li>
+                    <li>
+                        <div>外資連 3 日買超台積電，累計買超 5,200 張</div>
+                        <div class="news-time">09:45 · 工商時報</div>
+                    </li>
+                    <li>
+                        <div>台積電 ADR 昨夜收漲 1.5%，帶動今日台股開高</div>
+                        <div class="news-time">08:20 · 經濟日報</div>
+                    </li>
+                    <li>
+                        <div>分析師上調台積電目標價至 2,500 元，維持買進評等</div>
+                        <div class="news-time">07:15 · 財訊</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Financial Tab -->
+            <div class="info-content" data-tab="financial">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="label">Q1 營收(億)</div>
+                        <div class="value">8,392</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">Q1 EPS</div>
+                        <div class="value">12.08</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">毛利率</div>
+                        <div class="value">58.1%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">營益率</div>
+                        <div class="value">47.2%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">淨利率</div>
+                        <div class="value">41.8%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">YoY 營收</div>
+                        <div class="value up">+35.2%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-nav">
+    <a href="#" class="active"><span class="nav-icon">📊</span>行情</a>
+    <a href="#"><span class="nav-icon">📋</span>自選</a>
+    <a href="#"><span class="nav-icon">📈</span>交易</a>
+    <a href="#"><span class="nav-icon">⚙️</span>設定</a>
+</nav>
+
+<script>
+(function() {
+    // ── Demo Data Generation ──
+    function generateCandleData(count, basePrice, volatility) {
+        var data = [];
+        var price = basePrice;
+        var now = new Date();
+        now.setHours(9, 0, 0, 0);
+        for (var i = 0; i < count; i++) {
+            var change = (Math.random() - 0.48) * volatility;
+            var open = price;
+            var close = price + change;
+            var high = Math.max(open, close) + Math.random() * volatility * 0.3;
+            var low = Math.min(open, close) - Math.random() * volatility * 0.3;
+            var vol = Math.floor(Math.random() * 5000 + 1000);
+            data.push({
+                time: { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate(), hour: now.getHours(), minute: now.getMinutes() },
+                open: parseFloat(open.toFixed(2)),
+                high: parseFloat(high.toFixed(2)),
+                low: parseFloat(low.toFixed(2)),
+                close: parseFloat(close.toFixed(2)),
+                volume: vol
+            });
+            price = close;
+            now.setMinutes(now.getMinutes() + 1);
+        }
+        return data;
+    }
+
+    // ── Chart Setup ──
+    var chartContainer = document.getElementById('main-chart');
+    var chart = LightweightCharts.createChart(chartContainer, {
+        layout: {
+            background: { color: 'transparent' },
+            textColor: '#94a3b8'
+        },
+        grid: {
+            vertLines: { color: 'rgba(148,163,184,0.08)' },
+            horzLines: { color: 'rgba(148,163,184,0.08)' }
+        },
+        crosshair: {
+            mode: LightweightCharts.CrosshairMode.Normal,
+            vertLine: { color: 'rgba(244,114,182,0.3)', width: 1, style: 2 },
+            horzLine: { color: 'rgba(244,114,182,0.3)', width: 1, style: 2 }
+        },
+        rightPriceScale: {
+            borderColor: 'rgba(148,163,184,0.15)',
+            scaleMargins: { top: 0.1, bottom: 0.2 }
+        },
+        timeScale: {
+            borderColor: 'rgba(148,163,184,0.15)',
+            timeVisible: true,
+            secondsVisible: false
+        },
+        handleScroll: { vertTouchDrag: false },
+        handleScale: { axisPressedMouseMove: true }
+    });
+
+    // Main candle series
+    var candleSeries = chart.addCandlestickSeries({
+        upColor: '#f472b6',
+        downColor: '#60a5fa',
+        borderUpColor: '#f472b6',
+        borderDownColor: '#60a5fa',
+        wickUpColor: '#f472b6',
+        wickDownColor: '#60a5fa'
+    });
+
+    // Volume series (on separate pane)
+    var volSeries = chart.addHistogramSeries({
+        color: 'rgba(244,114,182,0.4)',
+        priceFormat: { type: 'volume' },
+        priceScaleId: 'volume'
+    });
+    chart.priceScale('volume').applyOptions({
+        scaleMargins: { top: 0.85, bottom: 0 }
+    });
+
+    // MA lines
+    var ma5Series = chart.addLineSeries({ color: '#fbbf24', lineWidth: 1, title: 'MA5' });
+    var ma20Series = chart.addLineSeries({ color: '#a78bfa', lineWidth: 1, title: 'MA20' });
+
+    // Generate and set data
+    var candleData = generateCandleData(120, 2180, 8);
+    candleSeries.setData(candleData);
+    volSeries.setData(candleData.map(function(d) {
+        return { time: d.time, value: d.volume, color: d.close >= d.open ? 'rgba(244,114,182,0.5)' : 'rgba(96,165,250,0.5)' };
+    }));
+
+    // Calculate simple MA
+    function calcMA(data, period) {
+        var result = [];
+        for (var i = period - 1; i < data.length; i++) {
+            var sum = 0;
+            for (var j = 0; j < period; j++) sum += data[i - j].close;
+            result.push({ time: data[i].time, value: parseFloat((sum / period).toFixed(2)) });
+        }
+        return result;
+    }
+    ma5Series.setData(calcMA(candleData, 5));
+    ma20Series.setData(calcMA(candleData, 20));
+
+    chart.timeScale().fitContent();
+
+    // Resize handler
+    window.addEventListener('resize', function() {
+        chart.applyOptions({ width: chartContainer.clientWidth, height: chartContainer.clientHeight });
+    });
+
+    // ── Watchlist Click ──
+    var watchlistItems = document.querySelectorAll('.watchlist-item');
+    var stockData = {
+        '2330.TW': { name: '台積電 — 半導體', price: 2205, emoji: '🟠', base: 2180 },
+        '2408.TW': { name: '南亞科 — 記憶體', price: 274.50, emoji: '🔵', base: 272 },
+        '2337.TW': { name: '旺宏 — 記憶體', price: 144.00, emoji: '🟢', base: 143 },
+        '2317.TW': { name: '鴻海 — 電子組裝', price: 185.50, emoji: '🟣', base: 185 },
+        '2454.TW': { name: '聯發科 — IC設計', price: 1280, emoji: '🔴', base: 1295 }
+    };
+
+    watchlistItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            watchlistItems.forEach(function(i) { i.classList.remove('active'); });
+            item.classList.add('active');
+            var sym = item.dataset.symbol;
+            var info = stockData[sym];
+            if (info) {
+                document.getElementById('current-symbol').textContent = sym;
+                document.getElementById('current-name').textContent = info.name;
+                document.querySelector('.symbol-badge').textContent = info.emoji;
+                // Regenerate chart
+                var newData = generateCandleData(120, info.base, info.base * 0.004);
+                candleSeries.setData(newData);
+                volSeries.setData(newData.map(function(d) {
+                    return { time: d.time, value: d.volume, color: d.close >= d.open ? 'rgba(244,114,182,0.5)' : 'rgba(96,165,250,0.5)' };
+                }));
+                ma5Series.setData(calcMA(newData, 5));
+                ma20Series.setData(calcMA(newData, 20));
+                chart.timeScale().fitContent();
+            }
+        });
+    });
+
+    // ── Interval Buttons ──
+    document.querySelectorAll('.tb-btn[data-interval]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tb-btn[data-interval]').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+        });
+    });
+
+    // ── Indicator Toggles ──
+    document.querySelectorAll('.tb-indicator').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            btn.classList.toggle('on');
+            var ind = btn.dataset.ind;
+            if (ind === 'ma') {
+                ma5Series.applyOptions({ visible: btn.classList.contains('on') });
+                ma20Series.applyOptions({ visible: btn.classList.contains('on') });
+            }
+            if (ind === 'vol') {
+                volSeries.applyOptions({ visible: btn.classList.contains('on') });
+            }
+        });
+    });
+
+    // ── Info Tabs ──
+    document.querySelectorAll('.info-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.info-tab').forEach(function(t) { t.classList.remove('active'); });
+            tab.classList.add('active');
+            var tabName = tab.dataset.tab;
+            document.querySelectorAll('.info-content').forEach(function(c) {
+                c.classList.toggle('active', c.dataset.tab === tabName);
+            });
+        });
+    });
+
+    // ── Live Price Simulation ──
+    setInterval(function() {
+        var activeItem = document.querySelector('.watchlist-item.active');
+        if (!activeItem) return;
+        var sym = activeItem.dataset.symbol;
+        var info = stockData[sym];
+        if (!info) return;
+        var change = (Math.random() - 0.5) * 2;
+        info.price += change;
+        var pct = ((info.price - info.base) / info.base * 100);
+        var priceEl = document.getElementById('current-price');
+        var changeEl = document.getElementById('current-change');
+        priceEl.textContent = info.price.toFixed(2);
+        changeEl.textContent = (info.price >= info.base ? '+' : '') + (info.price - info.base).toFixed(2) + ' (' + (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%)';
+        priceEl.className = 'price ' + (pct >= 0 ? 'up' : 'down');
+        changeEl.className = 'change ' + (pct >= 0 ? 'up' : 'down');
+        // Update watchlist
+        var wlPrice = activeItem.querySelector('.wl-price-val');
+        var wlChange = activeItem.querySelector('.wl-change');
+        wlPrice.textContent = info.price.toFixed(2);
+        wlChange.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+        wlChange.className = 'wl-change ' + (pct >= 0 ? 'up' : 'down');
+    }, 3000);
+
+})();
+</script>
+</body>
+</html>
