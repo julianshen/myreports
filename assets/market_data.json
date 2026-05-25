@@ -1,25 +1,25 @@
 {
-  "updated": "2026-05-25T23:25:32.038959+00:00",
+  "updated": "2026-05-25T23:30:36.379574+00:00",
   "indices": {
     "ES": {
-      "price": 7547.25,
-      "change": 56.25,
-      "changePct": 0.75
+      "price": 7545.5,
+      "change": 54.5,
+      "changePct": 0.73
     },
     "NQ": {
-      "price": 29879.25,
-      "change": 320.5,
-      "changePct": 1.08
+      "price": 29865.75,
+      "change": 307.0,
+      "changePct": 1.04
     },
     "YM": {
-      "price": 51002.0,
-      "change": 340.0,
-      "changePct": 0.67
+      "price": 51008.0,
+      "change": 346.0,
+      "changePct": 0.68
     },
     "RTY": {
-      "price": 2910.4,
-      "change": 38.3,
-      "changePct": 1.33
+      "price": 2909.7,
+      "change": 37.6,
+      "changePct": 1.31
     }
   },
   "sparklines": {
