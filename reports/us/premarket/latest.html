@@ -1,1 +1,360 @@
-2026-05-26.html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none';">
+
+    <title>美股盤前 - 2026-05-26</title>
+    <link rel="stylesheet" href="../../../assets/report.css">
+    <script src="../../../assets/lightweight-charts.js"></script>
+    <style>
+        :root {
+            --accent: #60a5fa;
+            --accent2: #a78bfa;
+        }
+        .market-badge { background: rgba(96,165,250,0.15); }
+        .news-link { background: rgba(96,165,250,0.12); }
+        .signal-value { background: rgba(96,165,250,0.15); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="back-btn">← 返回儀表板</a>
+        <div class="market-badge">🇺🇸 US Market</div>
+        <header>
+            <h1>🌅 美股盤前分析</h1>
+            <div class="meta">2026-05-26 · 美東時間 8:30 生成</div>
+        </header>
+
+        <!-- 指數期貨 -->
+        <div class="section">
+            <div class="section-title">📊 指數期貨</div>
+            <div class="futures-grid">
+                <div class="future-card">
+                    <div class="name">S&P 500</div>
+                    <div class="price">{{SPX_PRICE}}</div>
+                    <div class="change up">+0.64%</div>
+                </div>
+                <div class="future-card">
+                    <div class="name">NASDAQ</div>
+                    <div class="price">{{NDX_PRICE}}</div>
+                    <div class="change up">+0.88%</div>
+                </div>
+                <div class="future-card">
+                    <div class="name">Dow</div>
+                    <div class="price">{{DJI_PRICE}}</div>
+                    <div class="change up">+0.59%</div>
+                </div>
+                <div class="future-card">
+                    <div class="name">VIX</div>
+                    <div class="price">{{VIX_PRICE}}</div>
+                    <div class="change {{VIX_CHANGE_CLASS}}">{{VIX_CHANGE}}</div>
+                </div>
+            </div>
+            <div style="margin-top:12px;text-align:center;">
+                <span class="badge badge-green">BULLISH</span>
+            </div>
+        </div>
+
+        <!-- 投資組合 -->
+        <div class="section">
+            <div class="section-title">💼 投資組合</div>
+            
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left"><div class="stock-symbol">AAOX</div><div class="stock-name"></div></div>
+                <div class="stock-right"><div class="stock-price up">$59.86</div><div class="stock-change up">+12.24%</div></div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric"><div class="metric-label">RSI</div><div class="metric-value">48.8</div></div>
+                <div class="metric"><div class="metric-label">52週區間</div><div class="metric-value">51%</div></div>
+                <div class="metric"><div class="metric-label">趨勢</div><div class="metric-value">Downtrend</div></div>
+            </div>
+            
+                <div class='range-bar'><div class='range-fill' style='width:51%'></div></div>
+                <div class='range-labels'><span>52週低</span><span>51%</span><span>52週高</span></div>
+            
+            <div class="stock-signals"></div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left"><div class="stock-symbol">MU</div><div class="stock-name"></div></div>
+                <div class="stock-right"><div class="stock-price up">$751.00</div><div class="stock-change up">+78.56%</div></div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric"><div class="metric-label">RSI</div><div class="metric-value">66.2</div></div>
+                <div class="metric"><div class="metric-label">52週區間</div><div class="metric-value">91%</div></div>
+                <div class="metric"><div class="metric-label">趨勢</div><div class="metric-value">Downtrend</div></div>
+            </div>
+            
+                <div class='range-bar'><div class='range-fill' style='width:91%'></div></div>
+                <div class='range-labels'><span>52週低</span><span>91%</span><span>52週高</span></div>
+            
+            <div class="stock-signals"><div class='signal-item'>Approaching overbought</div></div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left"><div class="stock-symbol">NOK</div><div class="stock-name"></div></div>
+                <div class="stock-right"><div class="stock-price up">$15.47</div><div class="stock-change up">+63.53%</div></div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric"><div class="metric-label">RSI</div><div class="metric-value">64.3</div></div>
+                <div class="metric"><div class="metric-label">52週區間</div><div class="metric-value">97%</div></div>
+                <div class="metric"><div class="metric-label">趨勢</div><div class="metric-value">Strong Uptrend</div></div>
+            </div>
+            
+                <div class='range-bar'><div class='range-fill' style='width:97%'></div></div>
+                <div class='range-labels'><span>52週低</span><span>97%</span><span>52週高</span></div>
+            
+            <div class="stock-signals"><div class='signal-item'>Approaching overbought</div></div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left"><div class="stock-symbol">NVDA</div><div class="stock-name"></div></div>
+                <div class="stock-right"><div class="stock-price up">$215.33</div><div class="stock-change up">+14.15%</div></div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric"><div class="metric-label">RSI</div><div class="metric-value">62.5</div></div>
+                <div class="metric"><div class="metric-label">52週區間</div><div class="metric-value">80%</div></div>
+                <div class="metric"><div class="metric-label">趨勢</div><div class="metric-value">Downtrend</div></div>
+            </div>
+            
+                <div class='range-bar'><div class='range-fill' style='width:80%'></div></div>
+                <div class='range-labels'><span>52週低</span><span>80%</span><span>52週高</span></div>
+            
+            <div class="stock-signals"><div class='signal-item'>Approaching overbought</div></div>
+        </div>
+        
+        <div class="stock-card">
+            <div class="stock-header">
+                <div class="stock-left"><div class="stock-symbol">STM</div><div class="stock-name"></div></div>
+                <div class="stock-right"><div class="stock-price up">$66.86</div><div class="stock-change up">+69.35%</div></div>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric"><div class="metric-label">RSI</div><div class="metric-value">71.7</div></div>
+                <div class="metric"><div class="metric-label">52週區間</div><div class="metric-value">97%</div></div>
+                <div class="metric"><div class="metric-label">趨勢</div><div class="metric-value">Strong Uptrend</div></div>
+            </div>
+            
+                <div class='range-bar'><div class='range-fill' style='width:97%'></div></div>
+                <div class='range-labels'><span>52週低</span><span>97%</span><span>52週高</span></div>
+            
+            <div class="stock-signals"><div class='signal-item'>OVERBOUGHT - Risk of pullback</div></div>
+        </div>
+        
+            <div class="alert-box">
+                <div class="alert-title">⚠️ 風險提醒</div>
+                <div class="alert-text">{{RISK_ALERT}}</div>
+            </div>
+        </div>
+
+        <!-- 走勢圖 -->
+        <div class="section">
+            <div class="section-title">📈 走勢圖</div>
+            <div id="portfolio-charts" class="charts-grid">{{CHART_DIVS}}</div>
+        </div>
+
+        <!-- 價值機會 -->
+        <div class="section">
+            <div class="section-title">💎 價值機會 Top 5</div>
+            {{VALUE_CARDS}}
+        </div>
+
+        <!-- 市場快評 -->
+        <div class="section">
+            <div class="section-title">🐦 市場快評</div>
+            <div class="summary-article">{{COMMENTARY}}</div>
+        </div>
+
+        <!-- 新聞 -->
+        <div class="section">
+            <div class="section-title">📰 市場新聞</div>
+            {{NEWS_ITEMS}}
+        </div>
+
+        <!-- 每日總結 -->
+        <div class="section">
+            <div class="section-title">📰 每日市場總結</div>
+            <div class="summary-article">{{SUMMARY_ARTICLE}}</div>
+        </div>
+
+        <!-- 策略 -->
+        <div class="section">
+            <div class="section-title">🎯 今日策略</div>
+            <ul class="strategy-list">{{STRATEGY_ITEMS}}</ul>
+        </div>
+
+        <footer><p>資料僅供參考，非投資建議</p></footer>
+        <div class="nav-spacer"></div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="bottom-nav-inner">
+        <a href="../../index.html"><span class="nav-icon">🏠</span>首頁</a>
+        <a href="latest.html" class="active"><span class="nav-icon">🌅</span>盤前</a>
+        <a href="../intraday/latest.html"><span class="nav-icon">📈</span>盤中</a>
+        <a href="../postmarket/latest.html"><span class="nav-icon">🌙</span>盤後</a>
+        </div>
+    </div>
+    <script>
+    (function() {
+        var chartData = {{CHART_DATA}};
+        var chartInstances = {};
+        
+        function filterDataByRange(data, range) {
+            var days = range === '1M' ? 22 : range === '3M' ? 66 : 132;
+            return data.slice(-days);
+        }
+        
+        function createCharts(symbol, data, range) {
+            var container = document.getElementById('chart-' + symbol);
+            var volContainer = document.getElementById('chart-vol-' + symbol);
+            var rsiContainer = document.getElementById('chart-rsi-' + symbol);
+            if (!container) return;
+            
+            var prices = filterDataByRange(data.prices || [], range);
+            var volumes = filterDataByRange(data.volume || [], range);
+            var ma5 = filterDataByRange(data.ma5 || [], range);
+            var ma20 = filterDataByRange(data.ma20 || [], range);
+            var rsi = filterDataByRange(data.rsi || [], range);
+            var macdDif = filterDataByRange(data.macdDif || [], range);
+            var macdDea = filterDataByRange(data.macdDea || [], range);
+            var macdHist = filterDataByRange(data.macdHist || [], range);
+            var bbUpper = filterDataByRange(data.bbUpper || [], range);
+            var bbMiddle = filterDataByRange(data.bbMiddle || [], range);
+            var bbLower = filterDataByRange(data.bbLower || [], range);
+            
+            // Main price chart
+            var chart = LightweightCharts.createChart(container, {
+                width: container.clientWidth || 300,
+                height: 200,
+                layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                grid: { vertLines: { color: 'rgba(148,163,184,0.1)' }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
+                crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                timeScale: { borderColor: 'rgba(148,163,184,0.2)', timeVisible: false },
+                handleScroll: false,
+                handleScale: false
+            });
+            var series = chart.addAreaSeries({
+                topColor: 'rgba(96,165,250,0.3)',
+                bottomColor: 'rgba(96,165,250,0.05)',
+                lineColor: '#60a5fa',
+                lineWidth: 2
+            });
+            series.setData(prices);
+            
+            // MA5
+            if (ma5.length > 0) {
+                var ma5Series = chart.addLineSeries({ color: '#fbbf24', lineWidth: 1.5, title: 'MA5' });
+                ma5Series.setData(ma5);
+            }
+            // MA20
+            if (ma20.length > 0) {
+                var ma20Series = chart.addLineSeries({ color: '#f472b6', lineWidth: 1.5, title: 'MA20' });
+                ma20Series.setData(ma20);
+            }
+            // Bollinger Bands
+            if (bbUpper.length > 0) {
+                chart.addLineSeries({ color: 'rgba(148,163,184,0.4)', lineWidth: 1, title: 'BB+', lineStyle: LightweightCharts.LineStyle.Dashed }).setData(bbUpper);
+                chart.addLineSeries({ color: 'rgba(148,163,184,0.4)', lineWidth: 1, title: 'BB-', lineStyle: LightweightCharts.LineStyle.Dashed }).setData(bbLower);
+            }
+            
+            // Volume chart
+            var volChart = null;
+            if (volContainer) {
+                volChart = LightweightCharts.createChart(volContainer, {
+                    width: volContainer.clientWidth || 300,
+                    height: 60,
+                    layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                    grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(148,163,184,0.05)' } },
+                    rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                    timeScale: { visible: false },
+                    handleScroll: false,
+                    handleScale: false
+                });
+                var volSeries = volChart.addHistogramSeries({ color: 'rgba(96,165,250,0.5)' });
+                volSeries.setData(volumes);
+            }
+            
+            // RSI chart
+            var rsiChart = null;
+            if (rsiContainer) {
+                rsiChart = LightweightCharts.createChart(rsiContainer, {
+                    width: rsiContainer.clientWidth || 300,
+                    height: 80,
+                    layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                    grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
+                    rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                    timeScale: { visible: false },
+                    handleScroll: false,
+                    handleScale: false
+                });
+                var rsiSeries = rsiChart.addLineSeries({ color: '#a78bfa', lineWidth: 1.5 });
+                rsiSeries.setData(rsi);
+                rsiChart.addLineSeries({ color: 'rgba(251,113,133,0.5)', lineWidth: 1 }).setData(rsi.map(function(d) { return { time: d.time, value: 70 }; }));
+                rsiChart.addLineSeries({ color: 'rgba(52,211,153,0.5)', lineWidth: 1 }).setData(rsi.map(function(d) { return { time: d.time, value: 30 }; }));
+            }
+            
+            // MACD chart
+            var macdContainer = document.getElementById('chart-macd-' + symbol);
+            var macdChart = null;
+            if (macdContainer && macdDif.length > 0) {
+                macdChart = LightweightCharts.createChart(macdContainer, {
+                    width: macdContainer.clientWidth || 300,
+                    height: 80,
+                    layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                    grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(148,163,184,0.05)' } },
+                    rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                    timeScale: { visible: false },
+                    handleScroll: false,
+                    handleScale: false
+                });
+                var difSeries = macdChart.addLineSeries({ color: '#fbbf24', lineWidth: 1.5, title: 'DIF' });
+                difSeries.setData(macdDif);
+                var deaSeries = macdChart.addLineSeries({ color: '#f472b6', lineWidth: 1.5, title: 'DEA' });
+                deaSeries.setData(macdDea);
+                var histSeries = macdChart.addHistogramSeries({ color: 'rgba(96,165,250,0.6)' });
+                histSeries.setData(macdHist);
+            }
+            
+            return { price: chart, volume: volChart, rsi: rsiChart, macd: macdChart };
+        }
+        
+        function destroyCharts(symbol) {
+            if (chartInstances[symbol]) {
+                if (chartInstances[symbol].price) chartInstances[symbol].price.remove();
+                if (chartInstances[symbol].volume) chartInstances[symbol].volume.remove();
+                if (chartInstances[symbol].rsi) chartInstances[symbol].rsi.remove();
+                if (chartInstances[symbol].macd) chartInstances[symbol].macd.remove();
+                delete chartInstances[symbol];
+            }
+        }
+        
+        if (typeof LightweightCharts !== 'undefined' && chartData) {
+            Object.keys(chartData).forEach(function(symbol) {
+                var data = chartData[symbol];
+                chartInstances[symbol] = createCharts(symbol, data, '1M');
+                
+                // Range button handlers
+                var card = document.querySelector('.chart-card[data-symbol="' + symbol + '"]');
+                if (card) {
+                    card.querySelectorAll('.range-btn').forEach(function(btn) {
+                        btn.addEventListener('click', function() {
+                            card.querySelectorAll('.range-btn').forEach(function(b) { b.classList.remove('active'); });
+                            btn.classList.add('active');
+                            destroyCharts(symbol);
+                            chartInstances[symbol] = createCharts(symbol, data, btn.dataset.range);
+                        });
+                    });
+                }
+            });
+        }
+    })();
+    </script>
+</body>
+</html>
