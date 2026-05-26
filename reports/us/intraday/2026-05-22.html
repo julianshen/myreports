@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none';">
+
+    <title>美股盤中 - 2026-05-22</title>
+        <link rel="stylesheet" href="../../../assets/report.css">
+    <script src="../../../assets/lightweight-charts.js"></script>
+    <style>
+        :root {
+            --accent: #60a5fa;
+            --accent2: #a78bfa;
+        }
+        .market-badge { background: rgba(96,165,250,0.15); }
+        .news-link { background: rgba(96,165,250,0.12); }
+        .signal-value { background: rgba(96,165,250,0.15); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="back-btn">← 返回儀表板</a>
+        <div class="market-badge">🇺🇸 US Market</div>
+        <header>
+            <h1>📈 美股盤中監控</h1>
+            <div class="meta">2026-05-22 · 美東時間 21:45 更新</div>
+        </header>
+
+        <!-- 即時指數 -->
+        <div class="section">
+            <div class="section-title">📊 即時指數</div>
+            <div class="index-grid">
+                <div class="index-card">
+                    <div class="name">S&P 500</div>
+                    <div class="price">7496.10</div>
+                    <div class="change positive">+0.68%</div>
+                </div>
+                <div class="index-card">
+                    <div class="name">NASDAQ</div>
+                    <div class="price">26459.84</div>
+                    <div class="change positive">+0.63%</div>
+                </div>
+                <div class="index-card">
+                    <div class="name">Dow</div>
+                    <div class="price">50674.80</div>
+                    <div class="change positive">+0.77%</div>
+                </div>
+                <div class="index-card">
+                    <div class="name">VIX</div>
+                    <div class="price">16.72</div>
+                    <div class="change negative">-0.24%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 投資組合即時 -->
+        <div class="section">
+            <div class="section-title">💼 投資組合</div>
+            
+    <div class="stock-card">
+        <div class="stock-header">
+            <div class="stock-name">AAOX</div>
+            <div class="stock-price">$52.50</div>
+        </div>
+        <div class="stock-change negative">-8.78%</div>
+        <div class="meta">🟢 持倉損益 +5.0%</div>
+    </div>
+    
+    <div class="stock-card">
+        <div class="stock-header">
+            <div class="stock-name">MU</div>
+            <div class="stock-price">$756.51</div>
+        </div>
+        <div class="stock-change negative">-0.73%</div>
+        <div class="meta">🟢 持倉損益 +51.3%</div>
+    </div>
+    
+    <div class="stock-card">
+        <div class="stock-header">
+            <div class="stock-name">NOK</div>
+            <div class="stock-price">$15.10</div>
+        </div>
+        <div class="stock-change positive">+6.45%</div>
+        <div class="meta">🟢 持倉損益 +51.0%</div>
+    </div>
+    
+    <div class="stock-card">
+        <div class="stock-header">
+            <div class="stock-name">NVDA</div>
+            <div class="stock-price">$219.04</div>
+        </div>
+        <div class="stock-change negative">-0.21%</div>
+        <div class="meta">🟢 持倉損益 +21.7%</div>
+    </div>
+    
+    <div class="stock-card">
+        <div class="stock-header">
+            <div class="stock-name">STM</div>
+            <div class="stock-price">$66.34</div>
+        </div>
+        <div class="stock-change positive">+1.04%</div>
+        <div class="meta">🟢 持倉損益 +47.4%</div>
+    </div>
+    
+        </div>
+
+        <!-- 走勢圖 -->
+        <div class="section">
+            <div class="section-title">📈 今日走勢</div>
+            <div id="portfolio-charts" class="charts-grid">
+        <div class="chart-card" data-symbol="AAOX">
+            <div class="chart-header">
+                <div class="chart-title"><span class="symbol">AAOX</span></div>
+            </div>
+            <div id="chart-AAOX" class="chart-container"></div>
+            <div id="chart-vol-AAOX" class="chart-container-vol"></div>
+        </div>
+        
+        <div class="chart-card" data-symbol="MU">
+            <div class="chart-header">
+                <div class="chart-title"><span class="symbol">MU</span></div>
+            </div>
+            <div id="chart-MU" class="chart-container"></div>
+            <div id="chart-vol-MU" class="chart-container-vol"></div>
+        </div>
+        
+        <div class="chart-card" data-symbol="NOK">
+            <div class="chart-header">
+                <div class="chart-title"><span class="symbol">NOK</span></div>
+            </div>
+            <div id="chart-NOK" class="chart-container"></div>
+            <div id="chart-vol-NOK" class="chart-container-vol"></div>
+        </div>
+        
+        <div class="chart-card" data-symbol="NVDA">
+            <div class="chart-header">
+                <div class="chart-title"><span class="symbol">NVDA</span></div>
+            </div>
+            <div id="chart-NVDA" class="chart-container"></div>
+            <div id="chart-vol-NVDA" class="chart-container-vol"></div>
+        </div>
+        
+        <div class="chart-card" data-symbol="STM">
+            <div class="chart-header">
+                <div class="chart-title"><span class="symbol">STM</span></div>
+            </div>
+            <div id="chart-STM" class="chart-container"></div>
+            <div id="chart-vol-STM" class="chart-container-vol"></div>
+        </div>
+        </div>
+        </div>
+
+        <!-- 新聞 -->
+        <div class="section">
+            <div class="section-title">📰 相關新聞</div>
+            <div class="news-stock"><div class="news-stock-name">AAOX</div><div class="news-item" style="color:var(--text-secondary);font-size:0.8rem;padding:8px 0;">暫無相關新聞</div></div><div class="news-stock"><div class="news-stock-name">MU</div><a href="https://finance.yahoo.com/sectors/technology/articles/micron-advances-made-america-memory-132500272.html" target="_blank" class="news-item"><div class="news-title">Micron Advances Made-in-America Memory With Manufacturing Expansion in Virginia</div><div class="news-source">GlobeNewswire</div></a><a href="https://finance.yahoo.com/m/d1ae51a9-257d-3db3-a3b1-b577866bc9c6/micron-slips.-it-has-been-a.html" target="_blank" class="news-item"><div class="news-title">Micron Slips. It Has Been a Busy Week for Memory-Chip Stocks.</div><div class="news-source">Barrons.com</div></a></div><div class="news-stock"><div class="news-stock-name">NOK</div><a href="https://finance.yahoo.com/markets/stocks/articles/easing-bond-yields-lift-us-125121793.html" target="_blank" class="news-item"><div class="news-title">Easing Bond Yields Lift US Equity Futures Pre-Bell Amid Ongoing Middle East Peace Talks</div><div class="news-source">MT Newswires</div></a><a href="https://finance.yahoo.com/sectors/technology/articles/latest-global-private-5g-network-203000441.html" target="_blank" class="news-item"><div class="news-title">[Latest] Global Private 5G Network Market to Reach USD 312.2 Billion by 2035, Expanding at a 52.8% CAGR, Says Custom Market Insights (Analysis, Outlook, Leaders, Report, Trends, Forecast, Segmentation, Growth Rate, Value, SWOT Analysis)</div><div class="news-source">GlobeNewswire</div></a></div><div class="news-stock"><div class="news-stock-name">NVDA</div><a href="https://finance.yahoo.com/m/ff3b2598-41f5-3949-b5c2-feeb91d185bb/nio-drops-6%25-on-first-ever.html" target="_blank" class="news-item"><div class="news-title">NIO Drops 6% on First-Ever Profit, Tesla Moves Up 2%: The Two-Speed EV Trade in Action</div><div class="news-source">24/7 Wall St.</div></a><a href="https://finance.yahoo.com/markets/stocks/articles/dow-hits-first-intraday-record-133634533.html" target="_blank" class="news-item"><div class="news-title">Dow hits first intraday record high since February</div><div class="news-source">Reuters</div></a></div><div class="news-stock"><div class="news-stock-name">STM</div><a href="https://finance.yahoo.com/markets/stocks/articles/stmicroelectronics-stm-best-european-growth-105831820.html" target="_blank" class="news-item"><div class="news-title">STMicroelectronics (STM): The Best European Growth Stock to Buy</div><div class="news-source">Insider Monkey</div></a><a href="https://finance.yahoo.com/markets/stocks/articles/story-stmicroelectronics-enxtpa-stmpa-shifting-091526501.html" target="_blank" class="news-item"><div class="news-title">How The Story On STMicroelectronics (ENXTPA:STMPA) Is Shifting With AI And Analyst Rethinks</div><div class="news-source">Simply Wall St.</div></a></div>
+        </div>
+
+        <!-- 警報區 -->
+        <div class="section">
+            <div class="section-title">🚨 智慧警報</div>
+            <div class="alert-box"><div class="alert-title">ℹ️ 無重大警報</div><div class="alert-text">市場平穩，持續監控中...</div></div>
+        </div>
+
+        <footer><p>資料僅供參考，非投資建議</p></footer>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="../../index.html"><span class="nav-icon">🏠</span>首頁</a>
+        <a href="../premarket/latest.html"><span class="nav-icon">🌅</span>盤前</a>
+        <a href="latest.html" class="active"><span class="nav-icon">📈</span>盤中</a>
+        <a href="../postmarket/latest.html"><span class="nav-icon">🌙</span>盤後</a>
+    </div>
+    <script>
+    (function() {
+        var chartData = {"AAOX": {"prices": [{"time": "2026-05-22 21:30", "value": 55.4}, {"time": "2026-05-22 21:31", "value": 56.17}, {"time": "2026-05-22 21:32", "value": 54.38}, {"time": "2026-05-22 21:33", "value": 53.23}, {"time": "2026-05-22 21:34", "value": 52.65}, {"time": "2026-05-22 21:35", "value": 52.97}, {"time": "2026-05-22 21:36", "value": 53.95}, {"time": "2026-05-22 21:37", "value": 53.01}, {"time": "2026-05-22 21:38", "value": 52.33}, {"time": "2026-05-22 21:39", "value": 52.47}, {"time": "2026-05-22 21:40", "value": 52.39}, {"time": "2026-05-22 21:41", "value": 52.44}, {"time": "2026-05-22 21:42", "value": 51.19}, {"time": "2026-05-22 21:43", "value": 52.0}, {"time": "2026-05-22 21:44", "value": 52.2}, {"time": "2026-05-22 21:45", "value": 52.5}], "volume": [{"time": "2026-05-22 21:30", "value": 682261}, {"time": "2026-05-22 21:31", "value": 19458}, {"time": "2026-05-22 21:32", "value": 33685}, {"time": "2026-05-22 21:33", "value": 27277}, {"time": "2026-05-22 21:34", "value": 52646}, {"time": "2026-05-22 21:35", "value": 49165}, {"time": "2026-05-22 21:36", "value": 77979}, {"time": "2026-05-22 21:37", "value": 27124}, {"time": "2026-05-22 21:38", "value": 36121}, {"time": "2026-05-22 21:39", "value": 59591}, {"time": "2026-05-22 21:40", "value": 66387}, {"time": "2026-05-22 21:41", "value": 32772}, {"time": "2026-05-22 21:42", "value": 60898}, {"time": "2026-05-22 21:43", "value": 31455}, {"time": "2026-05-22 21:44", "value": 25941}, {"time": "2026-05-22 21:45", "value": 0}]}, "MU": {"prices": [{"time": "2026-05-22 21:30", "value": 752.3}, {"time": "2026-05-22 21:31", "value": 751.39}, {"time": "2026-05-22 21:32", "value": 750.0}, {"time": "2026-05-22 21:33", "value": 748.13}, {"time": "2026-05-22 21:34", "value": 752.38}, {"time": "2026-05-22 21:35", "value": 755.7}, {"time": "2026-05-22 21:36", "value": 754.58}, {"time": "2026-05-22 21:37", "value": 757.52}, {"time": "2026-05-22 21:38", "value": 759.5}, {"time": "2026-05-22 21:39", "value": 759.96}, {"time": "2026-05-22 21:40", "value": 758.13}, {"time": "2026-05-22 21:41", "value": 755.72}, {"time": "2026-05-22 21:42", "value": 751.24}, {"time": "2026-05-22 21:43", "value": 756.34}, {"time": "2026-05-22 21:44", "value": 758.44}, {"time": "2026-05-22 21:45", "value": 756.28}], "volume": [{"time": "2026-05-22 21:30", "value": 2226579}, {"time": "2026-05-22 21:31", "value": 212762}, {"time": "2026-05-22 21:32", "value": 227518}, {"time": "2026-05-22 21:33", "value": 196469}, {"time": "2026-05-22 21:34", "value": 142076}, {"time": "2026-05-22 21:35", "value": 178319}, {"time": "2026-05-22 21:36", "value": 196842}, {"time": "2026-05-22 21:37", "value": 173747}, {"time": "2026-05-22 21:38", "value": 186975}, {"time": "2026-05-22 21:39", "value": 212422}, {"time": "2026-05-22 21:40", "value": 208105}, {"time": "2026-05-22 21:41", "value": 140583}, {"time": "2026-05-22 21:42", "value": 238238}, {"time": "2026-05-22 21:43", "value": 183167}, {"time": "2026-05-22 21:44", "value": 155891}, {"time": "2026-05-22 21:45", "value": 0}]}, "NOK": {"prices": [{"time": "2026-05-22 21:30", "value": 14.65}, {"time": "2026-05-22 21:31", "value": 14.62}, {"time": "2026-05-22 21:32", "value": 14.7}, {"time": "2026-05-22 21:33", "value": 14.71}, {"time": "2026-05-22 21:34", "value": 14.82}, {"time": "2026-05-22 21:35", "value": 14.86}, {"time": "2026-05-22 21:36", "value": 15.01}, {"time": "2026-05-22 21:37", "value": 15.04}, {"time": "2026-05-22 21:38", "value": 15.09}, {"time": "2026-05-22 21:39", "value": 15.09}, {"time": "2026-05-22 21:40", "value": 15.08}, {"time": "2026-05-22 21:41", "value": 15.08}, {"time": "2026-05-22 21:42", "value": 15.05}, {"time": "2026-05-22 21:43", "value": 15.15}, {"time": "2026-05-22 21:44", "value": 15.11}, {"time": "2026-05-22 21:45", "value": 15.1}], "volume": [{"time": "2026-05-22 21:30", "value": 7986241}, {"time": "2026-05-22 21:31", "value": 682956}, {"time": "2026-05-22 21:32", "value": 626134}, {"time": "2026-05-22 21:33", "value": 721535}, {"time": "2026-05-22 21:34", "value": 922818}, {"time": "2026-05-22 21:35", "value": 1487076}, {"time": "2026-05-22 21:36", "value": 2235399}, {"time": "2026-05-22 21:37", "value": 1321630}, {"time": "2026-05-22 21:38", "value": 1304173}, {"time": "2026-05-22 21:39", "value": 1286889}, {"time": "2026-05-22 21:40", "value": 1352332}, {"time": "2026-05-22 21:41", "value": 768099}, {"time": "2026-05-22 21:42", "value": 860524}, {"time": "2026-05-22 21:43", "value": 1321407}, {"time": "2026-05-22 21:44", "value": 820313}, {"time": "2026-05-22 21:45", "value": 0}]}, "NVDA": {"prices": [{"time": "2026-05-22 21:30", "value": 220.0}, {"time": "2026-05-22 21:31", "value": 219.62}, {"time": "2026-05-22 21:32", "value": 219.34}, {"time": "2026-05-22 21:33", "value": 218.53}, {"time": "2026-05-22 21:34", "value": 219.85}, {"time": "2026-05-22 21:35", "value": 219.53}, {"time": "2026-05-22 21:36", "value": 220.08}, {"time": "2026-05-22 21:37", "value": 219.93}, {"time": "2026-05-22 21:38", "value": 220.13}, {"time": "2026-05-22 21:39", "value": 220.52}, {"time": "2026-05-22 21:40", "value": 220.18}, {"time": "2026-05-22 21:41", "value": 219.71}, {"time": "2026-05-22 21:42", "value": 219.48}, {"time": "2026-05-22 21:43", "value": 219.77}, {"time": "2026-05-22 21:44", "value": 219.17}, {"time": "2026-05-22 21:45", "value": 219.08}], "volume": [{"time": "2026-05-22 21:30", "value": 7847346}, {"time": "2026-05-22 21:31", "value": 906142}, {"time": "2026-05-22 21:32", "value": 848527}, {"time": "2026-05-22 21:33", "value": 1213645}, {"time": "2026-05-22 21:34", "value": 1100095}, {"time": "2026-05-22 21:35", "value": 990871}, {"time": "2026-05-22 21:36", "value": 786192}, {"time": "2026-05-22 21:37", "value": 604359}, {"time": "2026-05-22 21:38", "value": 572622}, {"time": "2026-05-22 21:39", "value": 982648}, {"time": "2026-05-22 21:40", "value": 783548}, {"time": "2026-05-22 21:41", "value": 614683}, {"time": "2026-05-22 21:42", "value": 734087}, {"time": "2026-05-22 21:43", "value": 475519}, {"time": "2026-05-22 21:44", "value": 733432}, {"time": "2026-05-22 21:45", "value": 0}]}, "STM": {"prices": [{"time": "2026-05-22 21:30", "value": 66.43}, {"time": "2026-05-22 21:31", "value": 66.41}, {"time": "2026-05-22 21:32", "value": 66.43}, {"time": "2026-05-22 21:33", "value": 66.21}, {"time": "2026-05-22 21:34", "value": 66.27}, {"time": "2026-05-22 21:35", "value": 66.41}, {"time": "2026-05-22 21:36", "value": 66.46}, {"time": "2026-05-22 21:37", "value": 66.41}, {"time": "2026-05-22 21:38", "value": 66.45}, {"time": "2026-05-22 21:39", "value": 66.5}, {"time": "2026-05-22 21:40", "value": 66.46}, {"time": "2026-05-22 21:41", "value": 66.43}, {"time": "2026-05-22 21:42", "value": 66.19}, {"time": "2026-05-22 21:43", "value": 66.44}, {"time": "2026-05-22 21:44", "value": 66.39}, {"time": "2026-05-22 21:45", "value": 66.34}], "volume": [{"time": "2026-05-22 21:30", "value": 446915}, {"time": "2026-05-22 21:31", "value": 50821}, {"time": "2026-05-22 21:32", "value": 52996}, {"time": "2026-05-22 21:33", "value": 72906}, {"time": "2026-05-22 21:34", "value": 21002}, {"time": "2026-05-22 21:35", "value": 35392}, {"time": "2026-05-22 21:36", "value": 42822}, {"time": "2026-05-22 21:37", "value": 33017}, {"time": "2026-05-22 21:38", "value": 41710}, {"time": "2026-05-22 21:39", "value": 30832}, {"time": "2026-05-22 21:40", "value": 38784}, {"time": "2026-05-22 21:41", "value": 21314}, {"time": "2026-05-22 21:42", "value": 55371}, {"time": "2026-05-22 21:43", "value": 33546}, {"time": "2026-05-22 21:44", "value": 25033}, {"time": "2026-05-22 21:45", "value": 0}]}};
+        if (typeof LightweightCharts !== 'undefined' && chartData) {
+            Object.keys(chartData).forEach(function(symbol) {
+                var container = document.getElementById('chart-' + symbol);
+                if (!container) return;
+                var data = chartData[symbol];
+                var chart = LightweightCharts.createChart(container, {
+                    width: container.clientWidth || 300,
+                    height: 200,
+                    layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                    grid: { vertLines: { color: 'rgba(148,163,184,0.1)' }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
+                    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                    rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                    timeScale: { borderColor: 'rgba(148,163,184,0.2)', timeVisible: true, secondsVisible: false },
+                    handleScroll: false,
+                    handleScale: false
+                });
+                var series = chart.addAreaSeries({
+                    topColor: 'rgba(96,165,250,0.3)',
+                    bottomColor: 'rgba(96,165,250,0.05)',
+                    lineColor: '#60a5fa',
+                    lineWidth: 2
+                });
+                series.setData(data.prices || []);
+                if (data.volume && data.volume.length > 0) {
+                    var volContainer = document.getElementById('chart-vol-' + symbol);
+                    if (volContainer) {
+                        var volChart = LightweightCharts.createChart(volContainer, {
+                            width: volContainer.clientWidth || 300,
+                            height: 60,
+                            layout: { background: { color: 'transparent' }, textColor: '#94a3b8' },
+                            grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(148,163,184,0.05)' } },
+                            rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
+                            timeScale: { visible: false },
+                            handleScroll: false,
+                            handleScale: false
+                        });
+                        var volSeries = volChart.addHistogramSeries({ color: 'rgba(96,165,250,0.5)' });
+                        volSeries.setData(data.volume || []);
+                    }
+                }
+            });
+        }
+    })();
+    </script>
+</body>
+</html>
